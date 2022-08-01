@@ -6,7 +6,7 @@ SQLALCHEMY_TRACK_MODIFICATIONS = false
 
 
 EXTENSIONS = [
-    
+    "app.ext.flask_sqlalchemy:init_app"
 ]
 
 [production]
