@@ -17,7 +17,7 @@ no caso de localhost e porta 5000:
 
 Adcionar uma receita
 
-- http://localhost.5000/api/v1/receitas
+- ```http://localhost.5000/api/v1/receitas```
 
 metodo POST com campos obrigatorios (descrição, valor, data), no formato json
 
@@ -29,9 +29,16 @@ metodo POST com campos obrigatorios (descrição, valor, data), no formato json
 }
 ```
 
+
+```json
+{
+	"message": "Dados inseridos com sucesso"
+}
+```
+
 Visualizar todas as receita
 
-- http://localhost.5000/api/v1/receitas
+- ```http://localhost.5000/api/v1/receitas```
 
 metodo GET, visualização em json
 
@@ -54,7 +61,7 @@ metodo GET, visualização em json
 
 Deletar receita
 
-- http://localhost.5000/api/v1/receitas/1
+- ```http://localhost.5000/api/v1/receitas/1```
 
 metodo DELETE, visualização em json
 
@@ -66,7 +73,7 @@ metodo DELETE, visualização em json
 
 Visualizar uma receita
 
-- http://localhost.5000/api/v1/receitas/1
+- ```http://localhost.5000/api/v1/receitas/1```
 
 metodo GET, visualização em json
 
@@ -81,13 +88,107 @@ metodo GET, visualização em json
 
 Atualizar uma receita
 
-- http://localhost.5000/api/v1/receitas/1
+- ```http://localhost.5000/api/v1/receitas/1```
 
 metodo PUT com campos obrigatorios (descrição, valor, data), no formato json
 
 ```json
 {
     "descricao": "Minha descrição atualizada de receita",
+    "valor": "1000,00",
+    "data": "2022-08-02 19:43:10"
+}
+```
+
+visualização de resulta com json
+
+```json
+{
+	"message": "Dados atualizado"
+}
+```
+
+Adcionar uma despesas
+
+- ```http://localhost.5000/api/v1/despesas```
+
+metodo POST com campos obrigatorios (descrição, valor, data), no formato json
+
+```json
+{
+    "descricao": "Minha descrição de receita",
+    "valor": "1000,00",
+    "data": "2022-08-02 19:43:10"
+}
+```
+
+visualizando resultado em json
+
+```json
+{
+	"message": "Dados inseridos com sucesso"
+}
+```
+
+Visualizar todas as despesas
+
+- ```http://localhost.5000/api/v1/despesas```
+
+metodo GET, visualização em json
+
+```json
+[
+    {
+        "id": 1,
+        "descricao": "Minha descrição de despesa",
+        "valor": "1000,00",
+        "data": "2022-08-02 19:43:10"
+    },
+    {
+        "id": 2,
+        "descricao": "Minha descrição 2 de despesa",
+        "valor": "1000,00",
+        "data": "2022-08-02 19:43:10"
+    }
+]
+```
+
+Deletar despesa
+
+- ```http://localhost.5000/api/v1/despesas/1```
+
+metodo DELETE, visualização em json
+
+```json
+{
+    "message": "Registro deletado com sucesso para o id: 1"
+}
+```
+
+Visualizar uma despesa
+
+- ```http://localhost.5000/api/v1/despesas/1```
+
+metodo GET, visualização em json
+
+```json
+{
+    "id": 1,
+    "descricao": "Minha descrição de despesa",
+    "valor": "1000,00",
+    "data": "2022-08-02 19:43:10"
+}
+```
+
+Atualizar uma despesa
+
+- ```http://localhost.5000/api/v1/despesas/1```
+
+metodo PUT com campos obrigatorios (descrição, valor, data), no formato json
+
+```json
+{
+    "descricao": "Minha descrição atualizada de despesa",
     "valor": "1000,00",
     "data": "2022-08-02 19:43:10"
 }
