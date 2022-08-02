@@ -26,10 +26,6 @@ class ReceitasModel(db.Model):
         if type(value) is str:
             return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
         return value
-        
-        
-    def as_dict(self):
-       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
     
     
     def __repr__(self) -> str:
