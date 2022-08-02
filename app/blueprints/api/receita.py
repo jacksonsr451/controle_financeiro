@@ -1,10 +1,9 @@
-from datetime import datetime
-import json
 from flask import jsonify
-from flask_restful import Resource, reqparse, inputs
+from flask_restful import Resource, reqparse
 
 from app.models import ReceitasModel
 from app.ext.flask_sqlalchemy import db
+from app.serializer.receitas_schema import ReceitasSchema
 
 
 receita_post_request = reqparse.RequestParser()
@@ -13,9 +12,14 @@ receita_post_request.add_argument("valor", type=str, help="Valor é um campor ob
 receita_post_request.add_argument("data", help="Data é um campor obrigatório.", required=True)
 
 
+receita_schema = ReceitasSchema()
+receitas_schema = ReceitasSchema(many=True)
+
+
+
 class Receita(Resource):
     def get(self):
-        return jsonify([receita.as_dict() for receita in ReceitasModel.query.all()])
+        return jsonify(receitas_schema.dump(ReceitasModel.query.all()))
     
     
     def post(self):
