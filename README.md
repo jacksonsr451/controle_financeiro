@@ -6,10 +6,10 @@ Projeto proposto pela Alura Challend Backend.
 
 **Por padrão as Rotas da api se iniciam como** /api/v1
 
-- /receitas
-- /receitas/<id>
-- /despesas
-- /despesas/<id>
+- ```/receitas```
+- ```/receitas/<id>```
+- ```/despesas```
+- ```/despesas/<id>```
 
 ### exemplos:
 
