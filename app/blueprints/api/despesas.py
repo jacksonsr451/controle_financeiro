@@ -46,3 +46,16 @@ class Despesas(Resource):
                     if data_atual[1].__eq__(request["data"].split('-')[1]):
                         return False
         return True
+
+
+class DespesasByID(Resource):
+    def get(self, id):
+        pass
+    
+    
+    def delete(self, id):
+        pass
+    
+    
+    def put(self, id):
+        pass
