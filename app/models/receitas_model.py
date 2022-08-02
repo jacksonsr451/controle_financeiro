@@ -12,8 +12,7 @@ class ReceitasModel(db.Model):
     data = db.Column(db.DateTime, nullable=False)
     
     
-    def __init__(self, id, descricao, valor, data) -> None:
-        self.id = id
+    def __init__(self, descricao, valor, data) -> None:
         self.descricao = descricao
         self.valor = valor
         if type(data) is not datetime:
