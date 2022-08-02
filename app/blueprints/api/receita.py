@@ -16,11 +16,7 @@ receita_post_request.add_argument("data", help="Data é um campor obrigatório."
 
 class Receita(Resource):
     def get(self):
-        receitas = ReceitasModel.query.all() 
-        list_receitas: list = list()
-        for receita in receitas:
-            list_receitas.append(receita.as_dict())
-        return jsonify(list_receitas)
+        return jsonify([receita.as_dict() for receita in ReceitasModel.query.all()])
     
     
     def post(self):
