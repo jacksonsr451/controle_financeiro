@@ -15,7 +15,7 @@ Projeto proposto pela Alura Challend Backend.
 
 no caso de localhost e porta 5000:
 
-Adcionar uma receita
+### Adcionar uma receita
 
 - ```http://localhost.5000/api/v1/receitas```
 
@@ -45,7 +45,7 @@ caso ERRO
 }
 ```
 
-Visualizar todas as receita
+### Visualizar todas as receita
 
 - ```http://localhost.5000/api/v1/receitas```
 
@@ -78,7 +78,7 @@ caso não tenha REGISTOS
 }
 ```
 
-Deletar receita
+### Deletar receita
 
 - ```http://localhost.5000/api/v1/receitas/1```
 
@@ -100,7 +100,7 @@ caso ERRO
 }
 ```
 
-Visualizar uma receita
+### Visualizar uma receita
 
 - ```http://localhost.5000/api/v1/receitas/1```
 
@@ -115,7 +115,7 @@ metodo GET, visualização em json
 }
 ```
 
-## Atualizar uma receita
+### Atualizar uma receita
 
 - ```http://localhost.5000/api/v1/receitas/1```
 
@@ -129,7 +129,7 @@ metodo PUT com campos obrigatorios (descrição, valor, data), no formato json
 }
 ```
 
-visualização de resulta com json
+visualização de resultado com json
 
 caso SUCESSO
 
@@ -155,7 +155,7 @@ caso ERRO
 }
 ```
 
-## Adcionar uma despesas
+### Adcionar uma despesas
 
 - ```http://localhost.5000/api/v1/despesas```
 
@@ -187,7 +187,7 @@ caso ERRO
 }
 ```
 
-Visualizar todas as despesas
+### Visualizar todas as despesas
 
 - ```http://localhost.5000/api/v1/despesas```
 
@@ -220,7 +220,7 @@ caso não tenha REGISTOS
 }
 ```
 
-Deletar despesa
+### Deletar despesa
 
 - ```http://localhost.5000/api/v1/despesas/1```
 
@@ -242,7 +242,7 @@ caso ERRO
 }
 ```
 
-Visualizar uma despesa
+### Visualizar uma despesa
 
 - ```http://localhost.5000/api/v1/despesas/1```
 
@@ -257,7 +257,7 @@ metodo GET, visualização em json
 }
 ```
 
-Atualizar uma despesa
+### Atualizar uma despesa
 
 - ```http://localhost.5000/api/v1/despesas/1```
 
