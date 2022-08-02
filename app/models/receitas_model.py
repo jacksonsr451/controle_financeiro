@@ -1,3 +1,4 @@
+from datetime import datetime
 from app.ext.flask_sqlalchemy import db
 
 
@@ -15,8 +16,21 @@ class ReceitasModel(db.Model):
         self.id = id
         self.descricao = descricao
         self.valor = valor
-        self.data = data
+        if type(data) is not datetime:
+            self.data = self.convert_params_by_datetime(data)
+        else:
+            self.data = data
         
+    
+    def convert_params_by_datetime(self, value):
+        if type(value) is str:
+            return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
+        return value
+        
+        
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+    
     
     def __repr__(self) -> str:
         return "{}".format({
