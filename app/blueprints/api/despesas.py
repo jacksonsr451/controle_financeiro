@@ -50,7 +50,10 @@ class Despesas(Resource):
 
 class DespesasByID(Resource):
     def get(self, id):
-        pass
+        despesa = DespesasModel.query.get(id)
+        if despesa is not None:
+            return jsonify(despesa_schema.dump(despesa))
+        return jsonify({"message": "Registro não existe para este id: {}".format(id)})
     
     
     def delete(self, id):
