@@ -11,6 +11,10 @@ receita_post_request.add_argument("descricao", type=str, help="Descricao é um c
 receita_post_request.add_argument("valor", type=str, help="Valor é um campor obrigatório e do tipo str.", required=True)
 receita_post_request.add_argument("data", help="Data é um campor obrigatório.", required=True)
 
+receita_put_request = reqparse.RequestParser()
+receita_put_request.add_argument("descricao", type=str, help="Descricao é um campor obrigatório e do tipo str.", required=True)
+receita_put_request.add_argument("valor", type=str, help="Valor é um campor obrigatório e do tipo str.", required=True)
+receita_put_request.add_argument("data", help="Data é um campor obrigatório.", required=True)
 
 receita_schema = ReceitasSchema()
 receitas_schema = ReceitasSchema(many=True)
@@ -31,10 +35,11 @@ class Receita(Resource):
         request = receita_post_request.parse_args()
         receitas = ReceitasModel.query.all()
         if not self.validate_receitas_by_post(receitas=receitas, request=request):
-            return jsonify({"message": "Não é permitido salvar aqui"})
+            return jsonify({"message": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})
         new_receita = ReceitasModel(descricao=request["descricao"], valor=request["valor"], data=request["data"])
         db.session.add(new_receita)
         db.session.commit()
+        return jsonify({"message": "Dados inseridos com sucesso"})
         
         
     def validate_receitas_by_post(self, receitas, request) -> bool:
@@ -66,15 +71,14 @@ class ReceitaByID(Resource):
         
     
     def put(self, id):    
-        request = receita_post_request.parse_args()
+        request = receita_put_request.parse_args()
         receita = ReceitasModel.query.get(id)
         if receita is not None and self.validate_receita_by_put(receita=receita, request=request):
-            if "descricao" in request:
-                receita.request = request["descricao"]
-            if "valor" in request:
-                receita.request = request["valor"]
-            if "data" in request:
-                receita.data = request["data"]
+            receita.descricao = request["descricao"]
+            receita.valor = request["valor"]
+            receita.data = ReceitasModel.convert_params_by_datetime(request["data"])
+            db.session.commit()    
+            return jsonify({"message": "Dados atualizado"})
         if receita is None:
             return jsonify({"message": "Não há registro para receita de id: {}".format(id)})    
         return jsonify({"message": "Erro ao alualizar receita de id: {}".format(id)})

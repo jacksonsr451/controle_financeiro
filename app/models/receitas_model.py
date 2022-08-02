@@ -21,7 +21,8 @@ class ReceitasModel(db.Model):
             self.data = data
         
     
-    def convert_params_by_datetime(self, value):
+    @staticmethod
+    def convert_params_by_datetime(value):
         if type(value) is str:
             return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
         return value
