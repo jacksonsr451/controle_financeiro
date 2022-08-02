@@ -30,7 +30,7 @@ class Despesas(Resource):
     def post(self):
         request = despesa_post_request.parse_args()
         despesas = DespesasModel.query.all()
-        if not self.validate_despesas_by_post(despesa=despesas, request=request):
+        if not self.validate_despesas_by_post(despesas=despesas, request=request):
             return jsonify({"message": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})
         new_despesas = DespesasModel(descricao=request["descricao"], valor=request["valor"], data=request["data"])
         db.session.add(new_despesas)
