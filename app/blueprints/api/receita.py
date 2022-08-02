@@ -19,7 +19,12 @@ receitas_schema = ReceitasSchema(many=True)
 
 class Receita(Resource):
     def get(self):
-        return jsonify(receitas_schema.dump(ReceitasModel.query.all()))
+        receitas = ReceitasModel.query.all()
+        if receitas is not None and len(receitas) > 1:
+            return jsonify(receitas_schema.dump(receitas))
+        elif receitas is not None and len(receitas) == 1:
+            return jsonify(receita_schema.dump(receitas[0]))
+        return jsonify({"message": "Não há registros em receitas"})
     
     
     def post(self):
@@ -40,4 +45,22 @@ class Receita(Resource):
                     if data_atual[1].__eq__(request["data"].split('-')[1]):
                         return False
         return True
-    
+
+
+
+class ReceitaByID(Resource):
+    def get(self, id):
+        receita = ReceitasModel.query.get(id)
+        if receita is not None:
+            return jsonify(receita_schema.dump(receita))
+        return jsonify({"message": "Registro não existe para este id: {}".format(id)})
+        
+        
+    def delete(self, id):
+        receita = ReceitasModel.query.get(id)
+        if receita is not None:
+            db.session.delete(receita)
+            db.session.commit()
+            return jsonify({"success": "Registro deletado com sucesso para o id: {}".format(id)})
+        return jsonify({"message": "Registro não existe para este id: {}".format(id)})
+        
