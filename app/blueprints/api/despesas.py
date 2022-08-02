@@ -57,7 +57,12 @@ class DespesasByID(Resource):
     
     
     def delete(self, id):
-        pass
+        despesa = DespesasModel.query.get(id)
+        if despesa is not None:
+            db.session.delete(despesa)
+            db.session.commit()
+            return jsonify({"success": "Registro deletado com sucesso para o id: {}".format(id)})
+        return jsonify({"message": "Registro não existe para este id: {}".format(id)})
     
     
     def put(self, id):
