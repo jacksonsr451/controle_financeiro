@@ -25,13 +25,19 @@ class Receita(Resource):
     def post(self):
         request = receita_post_request.parse_args()
         receitas = ReceitasModel.query.all()
+        if not self.validate_receitas_by_post(receitas=receitas, request=request):
+            return jsonify({"message": "Não é permitido salvar aqui"})
+        new_receita = ReceitasModel(descricao=request["descricao"], valor=request["valor"], data=request["data"])
+        db.session.add(new_receita)
+        db.session.commit()
+        
+        
+    def validate_receitas_by_post(self, receitas, request) -> bool:
         if len(receitas) > 0:
             for receita in receitas:
                 data_atual = receita.data.__str__().split('-')
                 if receita.descricao.__eq__(request["descricao"]):
                     if data_atual[1].__eq__(request["data"].split('-')[1]):
-                        return jsonify({"message": "Não é permitido salvar aqui"})
-        new_receita = ReceitasModel(descricao=request["descricao"], valor=request["valor"], data=request["data"])
-        db.session.add(new_receita)
-        db.session.commit()
-        
+                        return False
+        return True
+    
