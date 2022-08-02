@@ -64,3 +64,25 @@ class ReceitaByID(Resource):
             return jsonify({"success": "Registro deletado com sucesso para o id: {}".format(id)})
         return jsonify({"message": "Registro não existe para este id: {}".format(id)})
         
+    
+    def put(self, id):    
+        request = receita_post_request.parse_args()
+        receita = ReceitasModel.query.get(id)
+        if receita is not None and self.validate_receita_by_put(receita=receita, request=request):
+            if "descricao" in request:
+                receita.request = request["descricao"]
+            if "valor" in request:
+                receita.request = request["valor"]
+            if "data" in request:
+                receita.data = request["data"]
+        if receita is None:
+            return jsonify({"message": "Não há registro para receita de id: {}".format(id)})    
+        return jsonify({"message": "Erro ao alualizar receita de id: {}".format(id)})
+        
+        
+    def validate_receita_by_put(self, receita, request) -> bool:
+        data_atual = receita.data.__str__().split('-')
+        if receita.descricao.__eq__(request["descricao"]):
+            if data_atual[1].__eq__(request["data"].split('-')[1]):
+                return False
+        return True
