@@ -11,6 +11,11 @@ despesa_post_request.add_argument("descricao", type=str, help="Descricao é um c
 despesa_post_request.add_argument("valor", type=str, help="Valor é um campor obrigatório e do tipo str.", required=True)
 despesa_post_request.add_argument("data", help="Data é um campor obrigatório.", required=True)
 
+despesa_put_request = reqparse.RequestParser()
+despesa_put_request.add_argument("descricao", type=str, help="Descricao é um campor obrigatório e do tipo str.", required=True)
+despesa_put_request.add_argument("valor", type=str, help="Valor é um campor obrigatório e do tipo str.", required=True)
+despesa_put_request.add_argument("data", help="Data é um campor obrigatório.", required=True)
+
 
 despesa_schema = DespesasSchema()
 despesas_schema = DespesasSchema(many=True)
@@ -65,5 +70,23 @@ class DespesasByID(Resource):
         return jsonify({"message": "Registro não existe para este id: {}".format(id)})
     
     
-    def put(self, id):
-        pass
+    def put(self, id):    
+        request = despesa_put_request.parse_args()
+        despesa = DespesasModel.query.get(id)
+        if despesa is not None and self.validate_despesa_by_put(despesa=despesa, request=request):
+            despesa.descricao = request["descricao"]
+            despesa.valor = request["valor"]
+            despesa.data = DespesasModel.convert_params_by_datetime(request["data"])
+            db.session.commit()    
+            return jsonify({"message": "Dados atualizado"})
+        if despesa is None:
+            return jsonify({"message": "Não há registro para receita de id: {}".format(id)})    
+        return jsonify({"message": "Erro ao alualizar receita de id: {}".format(id)})
+        
+        
+    def validate_despesa_by_put(self, despesa, request) -> bool:
+        data_atual = despesa.data.__str__().split('-')
+        if despesa.descricao.__eq__(request["descricao"]):
+            if data_atual[1].__eq__(request["data"].split('-')[1]):
+                return False
+        return True
