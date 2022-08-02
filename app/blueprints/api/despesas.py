@@ -80,8 +80,8 @@ class DespesasByID(Resource):
             db.session.commit()    
             return jsonify({"message": "Dados atualizado"})
         if despesa is None:
-            return jsonify({"message": "Não há registro para receita de id: {}".format(id)})    
-        return jsonify({"message": "Erro ao alualizar receita de id: {}".format(id)})
+            return jsonify({"message": "Não há registro para despesa de id: {}".format(id)})    
+        return jsonify({"message": "Erro ao alualizar despesa de id: {}".format(id)})
         
         
     def validate_despesa_by_put(self, despesa, request) -> bool:
