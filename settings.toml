@@ -1,3 +1,6 @@
+[testing]
+SQLALCHEMY_DATABASE_URI="sqlite:///testdb.sqlite"
+
 [default]
 TITLE="Controle Financeiro"
 
