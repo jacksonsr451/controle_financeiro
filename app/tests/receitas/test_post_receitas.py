@@ -9,7 +9,7 @@ from app.models.receitas_model import ReceitasModel
 
 
 
-class TestPostAllReceitas(TestCase):
+class TestPostReceitas(TestCase):
     URL = "http://localhost:5000/api/v1/receitas"
     
     
