@@ -20,6 +20,12 @@ class TestGetAllDespesas(TestCase):
         self.app = app_test.test_client()
         db.create_all()
         
+    
+    def test_should_be_return_message_error(self):
+        value = jsonify({"message": "Não há registros em receitas"})
+        response = self.app.get(self.URL)
+        self.assertEqual(value.get_json(), response.get_json())
+        
         
     def test_should_be_request_return_status_code_200(self):
         response = self.app.get(self.URL)
