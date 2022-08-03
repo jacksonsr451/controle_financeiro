@@ -1,6 +1,4 @@
-import os
 from unittest import TestCase
-from flask import current_app
 
 from app import app
 from app.ext.flask_sqlalchemy import db
