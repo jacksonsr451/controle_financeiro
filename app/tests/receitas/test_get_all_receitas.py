@@ -62,8 +62,8 @@ class TestGetAllReceitas(TestCase):
     
         
     def test_should_be_response_is_equal(self):
-        data_1 = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        data_2 = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        data_1 = datetime.now()
+        data_2 = datetime.now()
         self.include_data(data_1, data_2)
         value = self.get_json_test_response_is_equal(data_1, data_2)
         response = self.app.get(self.URL)
