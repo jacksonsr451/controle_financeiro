@@ -8,12 +8,13 @@ from app.ext.flask_sqlalchemy import db
 from app.models.despesas_model import DespesasModel
 
 
+
 class TestGetAllDespesas(TestCase):
     URL = "http://localhost:5000/api/v1/despesas"
         
     
     def setUp(self) -> None:
-        app_test = app.create_app()
+        app_test = app.create_app(FORCE_ENV_FOR_DYNACONF="testing")
         app_test.testing = True
         self.ctx = app_test.app_context()
         self.ctx.push()

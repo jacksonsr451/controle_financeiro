@@ -14,7 +14,7 @@ class TestGetAllReceitas(TestCase):
     
     
     def setUp(self) -> None:
-        app_test = app.create_app()
+        app_test = app.create_app(FORCE_ENV_FOR_DYNACONF="testing")
         app_test.testing = True
         self.ctx = app_test.app_context()
         self.ctx.push()
