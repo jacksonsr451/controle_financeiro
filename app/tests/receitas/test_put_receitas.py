@@ -41,6 +41,21 @@ class TestPutDespesas(TestCase):
         value = jsonify({"message": "Dados atualizado"})
         response = self.app.put(self.URL + id, json=data_put)
         self.assertEqual(value.get_json(), response.get_json())
+        
+        
+    def test_should_be_return_message_duplicate_data(self):
+        data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data = ReceitasModel("Primeita receita", "200,00", data_1)
+        db.session.add(data)
+        db.session.commit()
+        data = ReceitasModel("Segunda receita", "300,00", data_1)
+        db.session.add(data)
+        db.session.commit()
+        id = "2"
+        data_put = {"descricao": "Primeita receita", "valor": "300,00", "data": data_1}
+        value = jsonify({"message": "Não é permitido atualizar, verifique os dados inseridos e se não são repeditos!"}) 
+        response = self.app.put(self.URL + id, json=data_put)
+        self.assertEqual(value.get_json(), response.get_json())
     
         
     def tearDown(self) -> None:
