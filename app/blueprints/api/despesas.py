@@ -29,7 +29,7 @@ class Despesas(Resource):
             return jsonify(despesas_schema.dump(despesas))
         elif despesas is not None and len(despesas) == 1:
             return jsonify(despesa_schema.dump(despesas[0]))
-        return jsonify({"message": "Não há registros em receitas"})
+        return jsonify({"message": "Não há registros em despesas"})
     
     
     def post(self):
@@ -80,7 +80,7 @@ class DespesasByID(Resource):
             db.session.commit()    
             return jsonify({"message": "Dados atualizado"})
         if despesa is None:
-            return jsonify({"message": "Não há registro para despesa de id: {}".format(id)})    
+            return jsonify({"message": "Não há registro para despesas de id: {}".format(id)})    
         return jsonify({"message": "Erro ao alualizar despesa de id: {}".format(id)})
         
         

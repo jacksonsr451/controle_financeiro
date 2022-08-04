@@ -23,7 +23,7 @@ class TestGetAllDespesas(TestCase):
         
     
     def test_should_be_return_message_error(self):
-        value = jsonify({"message": "Não há registros em receitas"})
+        value = jsonify({"message": "Não há registros em despesas"})
         response = self.app.get(self.URL)
         self.assertEqual(value.get_json(), response.get_json())
         
