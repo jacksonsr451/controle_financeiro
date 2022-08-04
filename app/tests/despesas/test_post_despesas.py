@@ -29,7 +29,17 @@ class TestPostDespesas(TestCase):
         response = self.app.post(self.URL, json=data)
         self.assertEqual(value.get_json(), response.get_json())
         self.assertEqual(response.status_code, 200)
-        
+    
+    
+    def test_should_be_retorn_message_error_by_duplicate_data(self):
+        data_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        value = jsonify({"message": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})
+        data_1 = {"descricao": "descricao 1", "valor": "100,00", "data": data_time}
+        data_2 = {"descricao": "descricao 1", "valor": "200,00", "data": data_time}
+        self.app.post(self.URL, json=data_1)
+        response = self.app.post(self.URL, json=data_2)
+        self.assertEqual(value.get_json(), response.get_json())
+    
         
     def tearDown(self) -> None:
         db.session.remove()
