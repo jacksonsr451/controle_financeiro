@@ -5,12 +5,12 @@ from flask import jsonify
 
 from app import app
 from app.ext.flask_sqlalchemy import db
-from app.models.receitas_model import ReceitasModel
+from app.models.despesas_model import DespesasModel
 
 
 
-class TestDeleteReceitas(TestCase):
-    URL = "http://localhost:5000/api/v1/receitas/"
+class TestDeleteDespesa(TestCase):
+    URL = "http://localhost:5000/api/v1/despesas/"
     
     
     def setUp(self) -> None:
@@ -24,7 +24,7 @@ class TestDeleteReceitas(TestCase):
         
     def test_should_be_delete_data_and_get_message_success(self):
         data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        data = ReceitasModel("Primeira receita", "200,00", data_1)
+        data = DespesasModel("Primeira despesa", "200,00", data_1)
         db.session.add(data)
         db.session.commit()
         id = "1"
