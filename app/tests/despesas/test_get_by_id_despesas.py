@@ -32,6 +32,13 @@ class TestGetByIDDespesa(TestCase):
         response = self.app.get(self.URL + id)
         self.assertEqual(value.get_json(), response.get_json())
     
+    
+    def test_should_be_return_message_error(self):
+        id = "1"
+        value = jsonify({"message": "Registro não existe para este id: {}".format(id)})
+        response = self.app.get(self.URL + id)
+        self.assertEqual(value.get_json(), response.get_json())
+        
         
     def tearDown(self) -> None:
         db.session.remove()
