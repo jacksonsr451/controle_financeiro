@@ -29,7 +29,7 @@ class Despesas(Resource):
             return jsonify(despesas_schema.dump(despesas))
         elif despesas is not None and len(despesas) == 1:
             return jsonify(despesa_schema.dump(despesas[0]))
-        return jsonify({"message": "Não há registros em receitas"})
+        return jsonify({"message": "Não há registros em despesas"})
     
     
     def post(self):
@@ -73,20 +73,22 @@ class DespesasByID(Resource):
     def put(self, id):    
         request = despesa_put_request.parse_args()
         despesa = DespesasModel.query.get(id)
-        if despesa is not None and self.validate_despesa_by_put(despesa=despesa, request=request):
+        if despesa is not None and self.validate_despesa_by_put(despesas=DespesasModel.query.all(), request=request):
             despesa.descricao = request["descricao"]
             despesa.valor = request["valor"]
             despesa.data = DespesasModel.convert_params_by_datetime(request["data"])
             db.session.commit()    
             return jsonify({"message": "Dados atualizado"})
         if despesa is None:
-            return jsonify({"message": "Não há registro para despesa de id: {}".format(id)})    
-        return jsonify({"message": "Erro ao alualizar despesa de id: {}".format(id)})
+            return jsonify({"message": "Não há registro para despesas de id: {}".format(id)})    
+        return jsonify({"message": "Não é permitido atualizar, verifique os dados inseridos e se não são repeditos!"})
         
         
-    def validate_despesa_by_put(self, despesa, request) -> bool:
-        data_atual = despesa.data.__str__().split('-')
-        if despesa.descricao.__eq__(request["descricao"]):
-            if data_atual[1].__eq__(request["data"].split('-')[1]):
-                return False
+    def validate_despesa_by_put(self, despesas, request) -> bool:
+        if len(despesas) > 0:
+            for despesa in despesas:
+                data_atual = despesa.data.__str__().split('-')
+                if despesa.descricao.__eq__(request["descricao"]):
+                    if data_atual[1].__eq__(request["data"].split('-')[1]):
+                        return False
         return True

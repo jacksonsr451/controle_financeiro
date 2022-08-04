@@ -73,20 +73,22 @@ class ReceitaByID(Resource):
     def put(self, id):    
         request = receita_put_request.parse_args()
         receita = ReceitasModel.query.get(id)
-        if receita is not None and self.validate_receita_by_put(receita=receita, request=request):
+        if receita is not None and self.validate_receita_by_put(receitas=ReceitasModel.query.all(), request=request):
             receita.descricao = request["descricao"]
             receita.valor = request["valor"]
             receita.data = ReceitasModel.convert_params_by_datetime(request["data"])
             db.session.commit()    
             return jsonify({"message": "Dados atualizado"})
         if receita is None:
-            return jsonify({"message": "Não há registro para receita de id: {}".format(id)})    
-        return jsonify({"message": "Erro ao alualizar receita de id: {}".format(id)})
+            return jsonify({"message": "Não há registro para receitas de id: {}".format(id)})    
+        return jsonify({"message": "Não é permitido atualizar, verifique os dados inseridos e se não são repeditos!".format(id)})
         
         
-    def validate_receita_by_put(self, receita, request) -> bool:
-        data_atual = receita.data.__str__().split('-')
-        if receita.descricao.__eq__(request["descricao"]):
-            if data_atual[1].__eq__(request["data"].split('-')[1]):
-                return False
+    def validate_receita_by_put(self, receitas, request) -> bool:
+        if len(receitas) > 0:
+            for receita in receitas:
+                data_atual = receita.data.__str__().split('-')
+                if receita.descricao.__eq__(request["descricao"]):
+                    if data_atual[1].__eq__(request["data"].split('-')[1]):
+                        return False
         return True
