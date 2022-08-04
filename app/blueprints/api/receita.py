@@ -80,8 +80,8 @@ class ReceitaByID(Resource):
             db.session.commit()    
             return jsonify({"message": "Dados atualizado"})
         if receita is None:
-            return jsonify({"message": "Não há registro para receita de id: {}".format(id)})    
-        return jsonify({"message": "Erro ao alualizar receita de id: {}".format(id)})
+            return jsonify({"message": "Não há registro para receitas de id: {}".format(id)})    
+        return jsonify({"message": "Erro ao alualizar receitas de id: {}".format(id)})
         
         
     def validate_receita_by_put(self, receita, request) -> bool:
