@@ -28,6 +28,14 @@ class ReceitasModel(db.Model):
         return value
     
     
+    @staticmethod
+    def filter_by_descicao(descricao):
+        return ReceitasModel.query.filter(
+                    ReceitasModel.descricao.like(
+                        "%{}%".format(descricao))
+                    ).all()
+    
+    
     def __repr__(self) -> str:
         return "{}".format({
             "id": self.id,

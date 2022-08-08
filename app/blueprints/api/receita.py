@@ -26,10 +26,7 @@ class Receita(Resource):
         response = None
         if "descricao" in request.args:
             response = self.get_response_on_receitas(
-                ReceitasModel.query.filter(
-                    ReceitasModel.descricao.like(
-                        "%{}%".format(request.args["descricao"]))
-                    ).all())
+                ReceitasModel.filter_by_descicao(request.args["descricao"]))
         else:        
             response = self.get_response_on_receitas(ReceitasModel.query.all())
         return response
