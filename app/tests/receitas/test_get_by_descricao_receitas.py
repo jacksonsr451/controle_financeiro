@@ -23,7 +23,11 @@ class TestGetByDescricaoReceitas(TestCase):
         
     
     def test_should_be_filter_by_args_descricao(self):
-        self.app.get(self.URL + "1")
+        data_1 = datetime.now()
+        value = ReceitasModel(descricao="Primeira receita", valor="200,00", data=data_1)
+        db.session.add(value)
+        db.session.commit()
+        self.app.get(self.URL + "Primeira")
         
         
     def tearDown(self) -> None:

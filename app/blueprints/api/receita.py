@@ -23,11 +23,19 @@ receitas_schema = ReceitasSchema(many=True)
 
 class Receita(Resource):
     def get(self):
-        args = request.args
-        if "descricao" in args:
-            # TODO: Create a filter by descricao
-            receitas = ReceitasModel.query.all()    
-        receitas = ReceitasModel.query.all()
+        response = None
+        if "descricao" in request.args:
+            response = self.get_response_on_receitas(
+                ReceitasModel.query.filter(
+                    ReceitasModel.descricao.like(
+                        "%{}%".format(request.args["descricao"]))
+                    ).all())
+        else:        
+            response = self.get_response_on_receitas(ReceitasModel.query.all())
+        return response
+    
+    
+    def get_response_on_receitas(self, receitas) -> jsonify:
         if receitas is not None and len(receitas) > 1:
             return jsonify(receitas_schema.dump(receitas))
         elif receitas is not None and len(receitas) == 1:
