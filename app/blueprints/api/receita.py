@@ -61,9 +61,8 @@ class Receita(Resource):
 
 class ReceitaByID(Resource):
     def get(self, id):
-        receita = ReceitasModel.query.get(id)
-        if receita is not None:
-            return jsonify(receita_schema.dump(receita))
+        receita = ReceitasModel.get(id)
+        if receita is not None: return jsonify(receita_schema.dump(receita))
         return jsonify({"message": "Registro não existe para este id: {}".format(id)})
         
         

@@ -46,6 +46,12 @@ class ReceitasModel(db.Model):
             return jsonify({"message": "Dados inseridos com sucesso"})
         except Exception as err:
             print(err)
+            
+            
+    @staticmethod
+    def get(id):
+        receita = ReceitasModel.query.get(id)
+        return receita
     
     
     def __repr__(self) -> str:
