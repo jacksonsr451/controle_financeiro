@@ -45,10 +45,12 @@ class Receita(Resource):
         receitas = ReceitasModel.query.all()
         if not self.validate_receitas_by_post(receitas=receitas, req_request=req_request):
             return jsonify({"message": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})
-        return ReceitasModel.add(request=req_request)
+        if ReceitasModel.add(request=req_request):
+            return jsonify({"message": "Dados inseridos com sucesso"})
         
         
     def validate_receitas_by_post(self, receitas, req_request) -> bool:
+        # TODO: Refactoring validation
         if len(receitas) > 0:
             for receita in receitas:
                 data_atual = receita.data.__str__().split('-')

@@ -1,3 +1,4 @@
+from ast import Return
 from flask import jsonify
 from datetime import datetime
 from app.ext.flask_sqlalchemy import db
@@ -38,18 +39,18 @@ class ReceitasModel(db.Model):
     
     
     @staticmethod
-    def add(request) -> jsonify:
+    def add(request) -> bool:
         try:
             new_receita = ReceitasModel(descricao=request["descricao"], valor=request["valor"], data=request["data"])
             db.session.add(new_receita)
             db.session.commit()
-            return jsonify({"message": "Dados inseridos com sucesso"})
-        except Exception as err:
-            print(err)
+            return True
+        except:
+            return False
             
             
     @staticmethod
-    def get(id):
+    def get(id) -> object:
         receita = ReceitasModel.query.get(id)
         return receita
     
