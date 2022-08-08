@@ -15,9 +15,7 @@ class DespesasModel(db.Model):
     
     
     def __init__(self, categoria=None, descricao=None, valor=None, data=None) -> None:
-        if categoria is None:
-            self.categoria = CategoriaEnum.OUTRAS
-        else:
+        if categoria is not None:
             self.categoria = CategoriaEnum(categoria)
         self.descricao = descricao
         self.valor = valor
