@@ -1,18 +1,24 @@
 from datetime import datetime
+from app.enum.categoria_enum import CategoriaEnum
 from app.ext.flask_sqlalchemy import db
-
+    
 
 
 class DespesasModel(db.Model):
     __tablename__ = "despesas"
     
     id =  db.Column(db.Integer, primary_key=True, autoincrement=True)
+    categoria = db.Column(db.Enum(CategoriaEnum), nullable=False, default=CategoriaEnum.OUTRAS)
     descricao = db.Column(db.Text, nullable=False)
     valor = db.Column(db.String(50), nullable=False)
     data = db.Column(db.DateTime, nullable=False)
     
     
-    def __init__(self, descricao, valor, data) -> None:
+    def __init__(self, categoria=None, descricao=None, valor=None, data=None) -> None:
+        if categoria is None:
+            self.categoria = CategoriaEnum.OUTRAS
+        else:
+            self.categoria = CategoriaEnum(categoria)
         self.descricao = descricao
         self.valor = valor
         if type(data) is not datetime:
@@ -31,6 +37,7 @@ class DespesasModel(db.Model):
     def __repr__(self) -> str:
         return "{}".format({
             "id": self.id,
+            "categoria": self.categoria.value,
             "descrição": self.descricao,
             "valor": self.valor,
             "data": self.data

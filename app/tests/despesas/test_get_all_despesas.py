@@ -48,12 +48,14 @@ class TestGetAllDespesas(TestCase):
         return jsonify([
             {
                 "id": 1,
+                "categoria": "Outras",
                 "descricao": "Primeiro dado",
                 "valor": "200,00",
                 "data": data_1.__str__().replace(" ", "T")
             },
             {
                 "id": 2,
+                "categoria": "Outras",
                 "descricao": "Segundo dado",
                 "valor": "200,00",
                 "data": data_2.__str__().replace(" ", "T")
