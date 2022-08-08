@@ -1,3 +1,5 @@
+from ast import Return
+from flask import jsonify
 from datetime import datetime
 from app.ext.flask_sqlalchemy import db
 
@@ -26,6 +28,31 @@ class ReceitasModel(db.Model):
         if type(value) is str:
             return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
         return value
+    
+    
+    @staticmethod
+    def filter_by_descicao(descricao):
+        return ReceitasModel.query.filter(
+                    ReceitasModel.descricao.like(
+                        "%{}%".format(descricao))
+                    ).all()
+    
+    
+    @staticmethod
+    def add(request) -> bool:
+        try:
+            new_receita = ReceitasModel(descricao=request["descricao"], valor=request["valor"], data=request["data"])
+            db.session.add(new_receita)
+            db.session.commit()
+            return True
+        except:
+            return False
+            
+            
+    @staticmethod
+    def get(id) -> object:
+        receita = ReceitasModel.query.get(id)
+        return receita
     
     
     def __repr__(self) -> str:
