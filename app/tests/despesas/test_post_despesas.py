@@ -1,3 +1,4 @@
+from dataclasses import replace
 from datetime import datetime
 from unittest import TestCase
 
@@ -22,13 +23,25 @@ class TestPostDespesas(TestCase):
         db.create_all()
         
         
-    def test_should_be_create_a_despesa_and_return_message_and_status_code(self):
+    def test_should_be_create_a_despesa_with_categoria_default_and_return_message_and_status_code(self):
         data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         value = jsonify({"message": "Dados inseridos com sucesso"})
         data = {"descricao": "descricao 1", "valor": "100,00", "data": data_1}
         response = self.app.post(self.URL, json=data)
         self.assertEqual(value.get_json(), response.get_json())
         self.assertEqual(response.status_code, 200)
+        
+    
+    def test_should_be_create_a_despesa_with_insert_a_categoria_and_verify_data(self):
+        data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        value = jsonify({"message": "Dados inseridos com sucesso"})
+        data = {"categoria": "Alimentação", "descricao": "descricao 1", "valor": "100,00", "data": data_1}
+        value_json = jsonify({"id": 1, "categoria": "Alimentação", "descricao": "descricao 1", "valor": "100,00", "data": data_1.__str__().replace(" ", "T")})
+        response = self.app.post(self.URL, json=data)
+        self.assertEqual(value.get_json(), response.get_json())
+        self.assertEqual(response.status_code, 200)
+        data_value = self.app.get(self.URL + "/1")
+        self.assertEqual(value_json.get_json(), data_value.get_json())
     
     
     def test_should_be_retorn_message_error_by_duplicate_data(self):

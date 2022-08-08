@@ -7,11 +7,13 @@ from app.serializer.despesas_schema import DespesasSchema
 
 
 despesa_post_request = reqparse.RequestParser()
+despesa_post_request.add_argument("categoria", type=str, required=False)
 despesa_post_request.add_argument("descricao", type=str, help="Descricao é um campor obrigatório e do tipo str.", required=True)
 despesa_post_request.add_argument("valor", type=str, help="Valor é um campor obrigatório e do tipo str.", required=True)
 despesa_post_request.add_argument("data", help="Data é um campor obrigatório.", required=True)
 
 despesa_put_request = reqparse.RequestParser()
+despesa_post_request.add_argument("categoria", type=str, required=False)
 despesa_put_request.add_argument("descricao", type=str, help="Descricao é um campor obrigatório e do tipo str.", required=True)
 despesa_put_request.add_argument("valor", type=str, help="Valor é um campor obrigatório e do tipo str.", required=True)
 despesa_put_request.add_argument("data", help="Data é um campor obrigatório.", required=True)
@@ -37,7 +39,10 @@ class Despesas(Resource):
         despesas = DespesasModel.query.all()
         if not self.validate_despesas_by_post(despesas=despesas, request=request):
             return jsonify({"message": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})
-        new_despesas = DespesasModel(descricao=request["descricao"], valor=request["valor"], data=request["data"])
+        if "categoria" in request:
+            new_despesas = DespesasModel(categoria=request["categoria"],descricao=request["descricao"], valor=request["valor"], data=request["data"])
+        else:
+            new_despesas = DespesasModel(descricao=request["descricao"], valor=request["valor"], data=request["data"])
         db.session.add(new_despesas)
         db.session.commit()
         return jsonify({"message": "Dados inseridos com sucesso"})
@@ -75,6 +80,7 @@ class DespesasByID(Resource):
         despesa = DespesasModel.query.get(id)
         if despesa is not None and self.validate_despesa_by_put(despesas=DespesasModel.query.all(), request=request):
             despesa.descricao = request["descricao"]
+            despesa.categoria = request["categoria"]
             despesa.valor = request["valor"]
             despesa.data = DespesasModel.convert_params_by_datetime(request["data"])
             db.session.commit()    

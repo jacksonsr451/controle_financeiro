@@ -14,7 +14,11 @@ class DespesasModel(db.Model):
     data = db.Column(db.DateTime, nullable=False)
     
     
-    def __init__(self, descricao, valor, data) -> None:
+    def __init__(self, categoria=None, descricao=None, valor=None, data=None) -> None:
+        if categoria is None:
+            self.categoria = CategoriaEnum.OUTRAS
+        else:
+            self.categoria = CategoriaEnum(categoria)
         self.descricao = descricao
         self.valor = valor
         if type(data) is not datetime:
@@ -33,6 +37,7 @@ class DespesasModel(db.Model):
     def __repr__(self) -> str:
         return "{}".format({
             "id": self.id,
+            "categoria": self.categoria.value,
             "descrição": self.descricao,
             "valor": self.valor,
             "data": self.data
