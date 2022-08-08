@@ -24,7 +24,7 @@ class TestDeleteDespesa(TestCase):
         
     def test_should_be_delete_data_and_get_message_success(self):
         data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        data = DespesasModel("Primeira despesa", "200,00", data_1)
+        data = DespesasModel(descricao="Primeira despesa", valor="200,00", data=data_1)
         db.session.add(data)
         db.session.commit()
         id = "1"
