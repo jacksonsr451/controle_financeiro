@@ -1,18 +1,6 @@
 from datetime import datetime
+from app.enum.categoria_enum import CategoriaEnum
 from app.ext.flask_sqlalchemy import db
-import enum
-
-
-
-class CategoriaEnum(enum.Enum):
-    ALIMENTACAO = "Alimentação"
-    SAUDE = "Saúde"
-    MORADIA = "Moradia"
-    TRANSPORTE = "Transporte"
-    EDUCACAO = "Educação"
-    LAZER = "Lazer"
-    IMPREVISTOS = "Imprevistos"
-    OUTRAS = "Outras"
     
 
 

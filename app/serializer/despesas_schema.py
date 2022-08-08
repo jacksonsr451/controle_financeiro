@@ -1,6 +1,6 @@
 from marshmallow_enum import EnumField
-
-from app.models.despesas_model import CategoriaEnum, DespesasModel
+from app.enum.categoria_enum import CategoriaEnum
+from app.models.despesas_model import DespesasModel
 from app.ext.flask_marshmallow import ma
 
 
