@@ -45,10 +45,7 @@ class Receita(Resource):
         receitas = ReceitasModel.query.all()
         if not self.validate_receitas_by_post(receitas=receitas, req_request=req_request):
             return jsonify({"message": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})
-        new_receita = ReceitasModel(descricao=req_request["descricao"], valor=req_request["valor"], data=req_request["data"])
-        db.session.add(new_receita)
-        db.session.commit()
-        return jsonify({"message": "Dados inseridos com sucesso"})
+        return ReceitasModel.add(request=req_request)
         
         
     def validate_receitas_by_post(self, receitas, req_request) -> bool:

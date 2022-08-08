@@ -1,3 +1,4 @@
+from flask import jsonify
 from datetime import datetime
 from app.ext.flask_sqlalchemy import db
 
@@ -34,6 +35,17 @@ class ReceitasModel(db.Model):
                     ReceitasModel.descricao.like(
                         "%{}%".format(descricao))
                     ).all()
+    
+    
+    @staticmethod
+    def add(request) -> jsonify:
+        try:
+            new_receita = ReceitasModel(descricao=request["descricao"], valor=request["valor"], data=request["data"])
+            db.session.add(new_receita)
+            db.session.commit()
+            return jsonify({"message": "Dados inseridos com sucesso"})
+        except Exception as err:
+            print(err)
     
     
     def __repr__(self) -> str:
