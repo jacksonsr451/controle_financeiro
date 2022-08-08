@@ -28,7 +28,7 @@ class TestGetByIDDespesa(TestCase):
         db.session.add(data)
         db.session.commit()
         id = "1"
-        value = jsonify({"id": 1, "descricao": "Primeira despesa", "valor": "200,00", "data": data_1.replace(" ", "T")})
+        value = jsonify({"id": 1, "categoria": "Outras", "descricao": "Primeira despesa", "valor": "200,00", "data": data_1.replace(" ", "T")})
         response = self.app.get(self.URL + id)
         self.assertEqual(value.get_json(), response.get_json())
     

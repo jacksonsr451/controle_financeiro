@@ -1,12 +1,26 @@
 from datetime import datetime
 from app.ext.flask_sqlalchemy import db
+import enum
 
+
+
+class CategoriaEnum(enum.Enum):
+    ALIMENTACAO = "Alimentação"
+    SAUDE = "Saúde"
+    MORADIA = "Moradia"
+    TRANSPORTE = "Transporte"
+    EDUCACAO = "Educação"
+    LAZER = "Lazer"
+    IMPREVISTOS = "Imprevistos"
+    OUTRAS = "Outras"
+    
 
 
 class DespesasModel(db.Model):
     __tablename__ = "despesas"
     
     id =  db.Column(db.Integer, primary_key=True, autoincrement=True)
+    categoria = db.Column(db.Enum(CategoriaEnum), nullable=False, default=CategoriaEnum.OUTRAS)
     descricao = db.Column(db.Text, nullable=False)
     valor = db.Column(db.String(50), nullable=False)
     data = db.Column(db.DateTime, nullable=False)
