@@ -55,6 +55,14 @@ class ReceitasModel(db.Model):
         return receita
     
     
+    @staticmethod
+    def put(data, values):
+        data.descricao = values["descricao"]
+        data.valor = values["valor"]
+        data.data = ReceitasModel.convert_params_by_datetime(values["data"])
+        db.session.commit()
+    
+    
     def __repr__(self) -> str:
         return "{}".format({
             "id": self.id,

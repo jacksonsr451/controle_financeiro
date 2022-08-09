@@ -79,12 +79,9 @@ class ReceitaByID(Resource):
     
     def put(self, id):    
         req_request = receita_put_request.parse_args()
-        receita = ReceitasModel.query.get(id)
+        receita = ReceitasModel.get(id)
         if receita is not None and self.validate_receita_by_put(receitas=ReceitasModel.query.all(), req_request=req_request):
-            receita.descricao = req_request["descricao"]
-            receita.valor = req_request["valor"]
-            receita.data = ReceitasModel.convert_params_by_datetime(req_request["data"])
-            db.session.commit()    
+            ReceitasModel.put(receita, req_request)    
             return jsonify({"message": "Dados atualizado"})
         if receita is None:
             return jsonify({"message": "Não há registro para receitas de id: {}".format(id)})    
@@ -92,6 +89,7 @@ class ReceitaByID(Resource):
         
         
     def validate_receita_by_put(self, receitas, req_request) -> bool:
+        # TODO: Refactoring validation
         if len(receitas) > 0:
             for receita in receitas:
                 data_atual = receita.data.__str__().split('-')
