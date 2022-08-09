@@ -92,3 +92,8 @@ class DespesasByID(Resource):
                         and data_atual[0].__eq__(req_request["data"].split('-')[0]):
                         return False
         return True
+
+
+class DespesasByAnoEMes(Resource):
+    def get(self, ano, mes):
+        return jsonify({"ano": ano, "mes": mes})
