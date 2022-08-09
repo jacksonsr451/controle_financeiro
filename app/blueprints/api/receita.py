@@ -42,7 +42,7 @@ class Receita(Resource):
     
     def post(self):
         req_request = receita_post_request.parse_args()
-        receitas = ReceitasModel.query.all()
+        receitas = ReceitasModel.all()
         if not self.validate_receitas_by_post(receitas=receitas, req_request=req_request):
             return jsonify({"message": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})
         if ReceitasModel.add(request=req_request):
@@ -68,21 +68,18 @@ class ReceitaByID(Resource):
         
         
     def delete(self, id):
-        receita = ReceitasModel.query.get(id)
-        if receita is not None:
-            db.session.delete(receita)
-            db.session.commit()
+        if ReceitasModel.delete(id):
             return jsonify({"success": "Registro deletado com sucesso para o id: {}".format(id)})
         return jsonify({"message": "Registro não existe para este id: {}".format(id)})
         
     
     def put(self, id):    
-        req_request = receita_put_request.parse_args()
-        receita = ReceitasModel.get(id)
-        if receita is not None and self.validate_receita_by_put(receitas=ReceitasModel.query.all(), req_request=req_request):
-            ReceitasModel.put(receita, req_request)    
+        put_request = receita_put_request.parse_args()
+        if self.validate_receita_by_put(
+            receitas=ReceitasModel.query.all(), 
+            req_request=put_request) and ReceitasModel.put(id, put_request):    
             return jsonify({"message": "Dados atualizado"})
-        if receita is None:
+        if ReceitasModel.get(id) is None:
             return jsonify({"message": "Não há registro para receitas de id: {}".format(id)})    
         return jsonify({"message": "Não é permitido atualizar, verifique os dados inseridos e se não são repeditos!".format(id)})
         
