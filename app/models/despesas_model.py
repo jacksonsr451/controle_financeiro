@@ -38,12 +38,25 @@ class DespesasModel(db.Model):
     
     
     @staticmethod
+    def filter_by_descicao(descricao) -> list:
+        return DespesasModel.query.filter(
+                    DespesasModel.descricao.like(
+                        "%{}%".format(descricao))
+                    ).all()
+        
+        
+    @staticmethod
     def add(request) -> bool:
         try:
-            new_receita = DespesasModel(categoria=request["categoria"], 
-                                        descricao=request["descricao"], 
-                                        valor=request["valor"], 
-                                        data=request["data"])
+            if "categoria" in request:
+                new_receita = DespesasModel(categoria=request["categoria"], 
+                                            descricao=request["descricao"], 
+                                            valor=request["valor"], 
+                                            data=request["data"])
+            else:
+                new_receita = DespesasModel(descricao=request["descricao"], 
+                                            valor=request["valor"], 
+                                            data=request["data"])
             db.session.add(new_receita)
             db.session.commit()
             return True
