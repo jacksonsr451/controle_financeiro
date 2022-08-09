@@ -36,6 +36,15 @@ class ReceitasModel(db.Model):
                     ReceitasModel.descricao.like(
                         "%{}%".format(descricao))
                     ).all()
+        
+    
+    
+    @staticmethod
+    def filter_by_ano_and_mes(ano, mes) -> list:
+        return ReceitasModel.query.filter(
+                    ReceitasModel.data.like(
+                        "%{}-{}%".format(ano, mes))
+                    ).all()
     
     
     @staticmethod

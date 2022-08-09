@@ -92,4 +92,19 @@ class ReceitaByID(Resource):
                     if data_atual[1].__eq__(req_request["data"].split('-')[1]) and data_atual[0].__eq__(req_request["data"].split('-')[0]):
                         return False
         return True
+
+
+class ReceitasByAnoEMes(Resource):
+    def get(self, ano, mes):
+        return self.get_response_on_receitas(
+            ReceitasModel.filter_by_ano_and_mes(ano=ano, mes=mes)
+        )
+    
+    
+    def get_response_on_receitas(self, receitas) -> jsonify:
+        if receitas is not None and len(receitas) > 1:
+            return jsonify(receitas_schema.dump(receitas))
+        elif receitas is not None and len(receitas) == 1:
+            return jsonify(receita_schema.dump(receitas[0]))
+        return jsonify({"message": "Não há registros em receitas"})
     
