@@ -25,7 +25,7 @@ class TestGetReceitasByAnoAndMes(TestCase):
     def test_should_be_filter_by_args_ano_and_mes(self):
         data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         ReceitasModel.add(request={"descricao": "Primeira receita", "valor":"200,00", "data":data_1})
-        value = jsonify({"id": 1, "categoria": "Outras", "descricao":"Primeira receita", "valor":"200,00", "data":data_1.__str__().replace(" ", "T")})
+        value = jsonify({"id": 1, "descricao":"Primeira receita", "valor":"200,00", "data":data_1.__str__().replace(" ", "T")})
         data = self.app.get(self.URL + "2022/08")
         self.assertEqual(value.get_json(), data.get_json())
         
