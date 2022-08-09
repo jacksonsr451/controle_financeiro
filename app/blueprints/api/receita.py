@@ -50,12 +50,11 @@ class Receita(Resource):
         
         
     def validate_receitas_by_post(self, receitas, req_request) -> bool:
-        # TODO: Refactoring validation
         if len(receitas) > 0:
             for receita in receitas:
                 data_atual = receita.data.__str__().split('-')
                 if receita.descricao.__eq__(req_request["descricao"]):
-                    if data_atual[1].__eq__(req_request["data"].split('-')[1]):
+                    if data_atual[1].__eq__(req_request["data"].split('-')[1]) and data_atual[0].__eq__(req_request["data"].split('-')[0]):
                         return False
         return True
 
@@ -89,12 +88,11 @@ class ReceitaByID(Resource):
         
         
     def validate_receita_by_put(self, receitas, req_request) -> bool:
-        # TODO: Refactoring validation
         if len(receitas) > 0:
             for receita in receitas:
                 data_atual = receita.data.__str__().split('-')
                 if receita.descricao.__eq__(req_request["descricao"]):
-                    if data_atual[1].__eq__(req_request["data"].split('-')[1]):
+                    if data_atual[1].__eq__(req_request["data"].split('-')[1]) and data_atual[0].__eq__(req_request["data"].split('-')[0]):
                         return False
         return True
     
