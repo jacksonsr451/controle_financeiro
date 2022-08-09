@@ -2,7 +2,6 @@ from flask import jsonify
 from flask_restful import Resource, reqparse
 
 from app.models.despesas_model import DespesasModel
-from app.ext.flask_sqlalchemy import db
 from app.serializer.despesas_schema import DespesasSchema
 
 

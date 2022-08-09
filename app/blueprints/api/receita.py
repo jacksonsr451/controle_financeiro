@@ -2,7 +2,6 @@ from flask import jsonify, request
 from flask_restful import Resource, reqparse
 
 from app.models import ReceitasModel
-from app.ext.flask_sqlalchemy import db
 from app.serializer.receitas_schema import ReceitasSchema
 
 
