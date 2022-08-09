@@ -96,4 +96,14 @@ class DespesasByID(Resource):
 
 class DespesasByAnoEMes(Resource):
     def get(self, ano, mes):
-        return jsonify({"ano": ano, "mes": mes})
+        return self.get_response_on_despesas(
+            DespesasModel.filter_by_ano_and_mes(ano=ano, mes=mes)
+        )
+    
+    
+    def get_response_on_despesas(self, despesas) -> jsonify:
+        if despesas is not None and len(despesas) > 1:
+            return jsonify(despesas_schema.dump(despesas))
+        elif despesas is not None and len(despesas) == 1:
+            return jsonify(despesa_schema.dump(despesas[0]))
+        return jsonify({"message": "Não há registros em despesas"})

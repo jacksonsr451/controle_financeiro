@@ -43,6 +43,14 @@ class DespesasModel(db.Model):
                     DespesasModel.descricao.like(
                         "%{}%".format(descricao))
                     ).all()
+
+    
+    @staticmethod
+    def filter_by_ano_and_mes(ano, mes) -> list:
+        return DespesasModel.query.filter(
+                    DespesasModel.data.like(
+                        "%{}-{}%".format(ano, mes))
+                    ).all()
         
         
     @staticmethod

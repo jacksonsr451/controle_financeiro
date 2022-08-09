@@ -9,7 +9,7 @@ from app.models.despesas_model import DespesasModel
 
 
 
-class TestGetByDescricaoDespesas(TestCase):
+class TestGetDespesasByAnoAndMes(TestCase):
     URL = "http://localhost:5000/api/v1/despesas/"
     
     
@@ -24,9 +24,9 @@ class TestGetByDescricaoDespesas(TestCase):
     
     def test_should_be_filter_by_args_ano_and_mes(self):
         data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        DespesasModel.add({"descricao": "Primeira despesa", "valor":"200,00", "data":data_1})
+        DespesasModel.add(request={"descricao": "Primeira despesa", "valor":"200,00", "data":data_1})
         value = jsonify({"id": 1, "categoria": "Outras", "descricao":"Primeira despesa", "valor":"200,00", "data":data_1.__str__().replace(" ", "T")})
-        data = self.app.get(self.URL + "2020/08")
+        data = self.app.get(self.URL + "2022/08")
         self.assertEqual(value.get_json(), data.get_json())
         
         
