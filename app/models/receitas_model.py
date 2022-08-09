@@ -46,7 +46,9 @@ class ReceitasModel(db.Model):
     @staticmethod
     def add(request) -> bool:
         try:
-            new_receita = ReceitasModel(descricao=request["descricao"], valor=request["valor"], data=request["data"])
+            new_receita = ReceitasModel(descricao=request["descricao"], 
+                                        valor=request["valor"], 
+                                        data=request["data"])
             db.session.add(new_receita)
             db.session.commit()
             return True

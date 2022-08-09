@@ -33,8 +33,51 @@ class DespesasModel(db.Model):
     
     
     @staticmethod
-    def all():
+    def all() -> list:
         return DespesasModel.query.all()
+    
+    
+    @staticmethod
+    def add(request) -> bool:
+        try:
+            new_receita = DespesasModel(categoria=request["categoria"], 
+                                        descricao=request["descricao"], 
+                                        valor=request["valor"], 
+                                        data=request["data"])
+            db.session.add(new_receita)
+            db.session.commit()
+            return True
+        except:
+            return False
+        
+    
+    @staticmethod
+    def get(id) -> dict:
+        receita = DespesasModel.query.get(id)
+        return receita
+    
+    
+    @staticmethod
+    def put(id, values) -> bool:
+        data = DespesasModel.get(id)
+        if data:
+            data.categoria = values["categoria"]   
+            data.descricao = values["descricao"]
+            data.valor = values["valor"]
+            data.data = DespesasModel.convert_params_by_datetime(values["data"])
+            db.session.commit()
+            return True
+        return False
+    
+    
+    @staticmethod
+    def delete(id) -> bool:
+        receita = DespesasModel.get(id)
+        if receita is not None:
+            db.session.delete(receita)
+            db.session.commit()
+            return True
+        return False
         
     
     def __repr__(self) -> str:
