@@ -2,7 +2,6 @@ from flask import jsonify, request
 from flask_restful import Resource, reqparse
 
 from app.models import ReceitasModel
-from app.ext.flask_sqlalchemy import db
 from app.serializer.receitas_schema import ReceitasSchema
 
 
@@ -22,13 +21,13 @@ receitas_schema = ReceitasSchema(many=True)
 
 
 class Receita(Resource):
-    def get(self):
+    def get(self) -> jsonify:
         response = None
         if "descricao" in request.args:
             response = self.get_response_on_receitas(
                 ReceitasModel.filter_by_descicao(request.args["descricao"]))
         else:        
-            response = self.get_response_on_receitas(ReceitasModel.query.all())
+            response = self.get_response_on_receitas(ReceitasModel.all())
         return response
     
     
@@ -40,54 +39,48 @@ class Receita(Resource):
         return jsonify({"message": "Não há registros em receitas"})
     
     
-    def post(self):
-        req_request = receita_post_request.parse_args()
-        receitas = ReceitasModel.query.all()
-        if not self.validate_receitas_by_post(receitas=receitas, req_request=req_request):
+    def post(self) -> jsonify:
+        receitas = ReceitasModel.all()
+        if not self.validate_receitas_by_post(
+            receitas=receitas, req_request=receita_post_request.parse_args()):
             return jsonify({"message": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})
-        if ReceitasModel.add(request=req_request):
+        if ReceitasModel.add(request=receita_post_request.parse_args()):
             return jsonify({"message": "Dados inseridos com sucesso"})
         
         
     def validate_receitas_by_post(self, receitas, req_request) -> bool:
-        # TODO: Refactoring validation
         if len(receitas) > 0:
             for receita in receitas:
                 data_atual = receita.data.__str__().split('-')
                 if receita.descricao.__eq__(req_request["descricao"]):
-                    if data_atual[1].__eq__(req_request["data"].split('-')[1]):
+                    if data_atual[1].__eq__(req_request["data"].split('-')[1])  \
+                        and data_atual[0].__eq__(req_request["data"].split('-')[0]):
                         return False
         return True
 
 
 
 class ReceitaByID(Resource):
-    def get(self, id):
+    def get(self, id) -> jsonify:
         receita = ReceitasModel.get(id)
         if receita is not None: return jsonify(receita_schema.dump(receita))
         return jsonify({"message": "Registro não existe para este id: {}".format(id)})
         
         
-    def delete(self, id):
-        receita = ReceitasModel.query.get(id)
-        if receita is not None:
-            db.session.delete(receita)
-            db.session.commit()
+    def delete(self, id) -> jsonify:
+        if ReceitasModel.delete(id):
             return jsonify({"success": "Registro deletado com sucesso para o id: {}".format(id)})
         return jsonify({"message": "Registro não existe para este id: {}".format(id)})
         
     
-    def put(self, id):    
-        req_request = receita_put_request.parse_args()
-        receita = ReceitasModel.query.get(id)
-        if receita is not None and self.validate_receita_by_put(receitas=ReceitasModel.query.all(), req_request=req_request):
-            receita.descricao = req_request["descricao"]
-            receita.valor = req_request["valor"]
-            receita.data = ReceitasModel.convert_params_by_datetime(req_request["data"])
-            db.session.commit()    
-            return jsonify({"message": "Dados atualizado"})
-        if receita is None:
-            return jsonify({"message": "Não há registro para receitas de id: {}".format(id)})    
+    def put(self, id) -> jsonify:    
+        put_request = receita_put_request.parse_args()
+        if ReceitasModel.get(id) is None:
+            return jsonify({"message": "Não há registro para receitas de id: {}".format(id)})  
+        if self.validate_receita_by_put(
+            receitas=ReceitasModel.all(), 
+            req_request=put_request) and ReceitasModel.put(id, put_request):    
+            return jsonify({"message": "Dados atualizado"})  
         return jsonify({"message": "Não é permitido atualizar, verifique os dados inseridos e se não são repeditos!".format(id)})
         
         
@@ -96,7 +89,7 @@ class ReceitaByID(Resource):
             for receita in receitas:
                 data_atual = receita.data.__str__().split('-')
                 if receita.descricao.__eq__(req_request["descricao"]):
-                    if data_atual[1].__eq__(req_request["data"].split('-')[1]):
+                    if data_atual[1].__eq__(req_request["data"].split('-')[1]) and data_atual[0].__eq__(req_request["data"].split('-')[0]):
                         return False
         return True
     

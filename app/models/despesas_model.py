@@ -30,6 +30,67 @@ class DespesasModel(db.Model):
         if type(value) is str:
             return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
         return value
+    
+    
+    @staticmethod
+    def all() -> list:
+        return DespesasModel.query.all()
+    
+    
+    @staticmethod
+    def filter_by_descicao(descricao) -> list:
+        return DespesasModel.query.filter(
+                    DespesasModel.descricao.like(
+                        "%{}%".format(descricao))
+                    ).all()
+        
+        
+    @staticmethod
+    def add(request) -> bool:
+        try:
+            if "categoria" in request:
+                new_receita = DespesasModel(categoria=request["categoria"], 
+                                            descricao=request["descricao"], 
+                                            valor=request["valor"], 
+                                            data=request["data"])
+            else:
+                new_receita = DespesasModel(descricao=request["descricao"], 
+                                            valor=request["valor"], 
+                                            data=request["data"])
+            db.session.add(new_receita)
+            db.session.commit()
+            return True
+        except:
+            return False
+        
+    
+    @staticmethod
+    def get(id) -> dict:
+        receita = DespesasModel.query.get(id)
+        return receita
+    
+    
+    @staticmethod
+    def put(id, values) -> bool:
+        data = DespesasModel.get(id)
+        if data:
+            data.categoria = values["categoria"]   
+            data.descricao = values["descricao"]
+            data.valor = values["valor"]
+            data.data = DespesasModel.convert_params_by_datetime(values["data"])
+            db.session.commit()
+            return True
+        return False
+    
+    
+    @staticmethod
+    def delete(id) -> bool:
+        receita = DespesasModel.get(id)
+        if receita is not None:
+            db.session.delete(receita)
+            db.session.commit()
+            return True
+        return False
         
     
     def __repr__(self) -> str:

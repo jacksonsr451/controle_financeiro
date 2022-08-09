@@ -24,14 +24,14 @@ class ReceitasModel(db.Model):
         
     
     @staticmethod
-    def convert_params_by_datetime(value):
+    def convert_params_by_datetime(value) -> datetime:
         if type(value) is str:
             return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
         return value
     
     
     @staticmethod
-    def filter_by_descicao(descricao):
+    def filter_by_descicao(descricao) -> list:
         return ReceitasModel.query.filter(
                     ReceitasModel.descricao.like(
                         "%{}%".format(descricao))
@@ -39,9 +39,16 @@ class ReceitasModel(db.Model):
     
     
     @staticmethod
+    def all() -> list:
+        return ReceitasModel.query.all()
+    
+    
+    @staticmethod
     def add(request) -> bool:
         try:
-            new_receita = ReceitasModel(descricao=request["descricao"], valor=request["valor"], data=request["data"])
+            new_receita = ReceitasModel(descricao=request["descricao"], 
+                                        valor=request["valor"], 
+                                        data=request["data"])
             db.session.add(new_receita)
             db.session.commit()
             return True
@@ -50,9 +57,31 @@ class ReceitasModel(db.Model):
             
             
     @staticmethod
-    def get(id) -> object:
+    def get(id) -> dict:
         receita = ReceitasModel.query.get(id)
         return receita
+    
+    
+    @staticmethod
+    def put(id, values) -> bool:
+        data = ReceitasModel.get(id)
+        if data:    
+            data.descricao = values["descricao"]
+            data.valor = values["valor"]
+            data.data = ReceitasModel.convert_params_by_datetime(values["data"])
+            db.session.commit()
+            return True
+        return False
+        
+        
+    @staticmethod
+    def delete(id) -> bool:
+        receita = ReceitasModel.get(id)
+        if receita is not None:
+            db.session.delete(receita)
+            db.session.commit()
+            return True
+        return False
     
     
     def __repr__(self) -> str:

@@ -5,12 +5,12 @@ from flask import jsonify
 
 from app import app
 from app.ext.flask_sqlalchemy import db
-from app.models.receitas_model import ReceitasModel
+from app.models.despesas_model import DespesasModel
 
 
 
-class TestGetByDescricaoReceitas(TestCase):
-    URL = "http://localhost:5000/api/v1/receitas?descricao="
+class TestGetByDescricaoDespesas(TestCase):
+    URL = "http://localhost:5000/api/v1/despesas/"
     
     
     def setUp(self) -> None:
@@ -22,11 +22,11 @@ class TestGetByDescricaoReceitas(TestCase):
         db.create_all()
         
     
-    def test_should_be_filter_by_args_descricao(self):
-        data_1 = datetime.now()
-        ReceitasModel.add(request={"descricao":"Primeira receita", "valor":"200,00", "data":data_1})
-        value = jsonify({"id": 1, "descricao":"Primeira receita", "valor":"200,00", "data":data_1.__str__().replace(" ", "T")})
-        data = self.app.get(self.URL + "Primeira")
+    def test_should_be_filter_by_args_ano_and_mes(self):
+        data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        DespesasModel.add({"descricao": "Primeira despesa", "valor":"200,00", "data":data_1})
+        value = jsonify({"id": 1, "categoria": "Outras", "descricao":"Primeira despesa", "valor":"200,00", "data":data_1.__str__().replace(" ", "T")})
+        data = self.app.get(self.URL + "2020/08")
         self.assertEqual(value.get_json(), data.get_json())
         
         
