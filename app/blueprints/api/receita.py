@@ -28,7 +28,7 @@ class Receita(Resource):
             response = self.get_response_on_receitas(
                 ReceitasModel.filter_by_descicao(request.args["descricao"]))
         else:        
-            response = self.get_response_on_receitas(ReceitasModel.query.all())
+            response = self.get_response_on_receitas(ReceitasModel.all())
         return response
     
     
