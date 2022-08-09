@@ -53,7 +53,7 @@ class Despesas(Resource):
             for despesa in despesas:
                 data_atual = despesa.data.__str__().split('-')
                 if despesa.descricao.__eq__(request["descricao"]):
-                    if data_atual[1].__eq__(request["data"].split('-')[1]):
+                    if data_atual[1].__eq__(request["data"].split('-')[1]) and data_atual[0].__eq__(request["data"].split('-')[0]):
                         return False
         return True
 
@@ -95,6 +95,6 @@ class DespesasByID(Resource):
             for despesa in despesas:
                 data_atual = despesa.data.__str__().split('-')
                 if despesa.descricao.__eq__(request["descricao"]):
-                    if data_atual[1].__eq__(request["data"].split('-')[1]):
+                    if data_atual[1].__eq__(request["data"].split('-')[1]) and data_atual[0].__eq__(request["data"].split('-')[0]):
                         return False
         return True
