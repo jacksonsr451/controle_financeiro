@@ -30,6 +30,11 @@ class DespesasModel(db.Model):
         if type(value) is str:
             return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
         return value
+    
+    
+    @staticmethod
+    def all():
+        return DespesasModel.query.all()
         
     
     def __repr__(self) -> str:

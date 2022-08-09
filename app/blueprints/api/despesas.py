@@ -26,7 +26,10 @@ despesas_schema = DespesasSchema(many=True)
 
 class Despesas(Resource):
     def get(self):
-        despesas = DespesasModel.query.all()
+        return self.get_response_on_despesas(despesas=DespesasModel.all())
+    
+    
+    def get_response_on_despesas(self, despesas) -> jsonify:
         if despesas is not None and len(despesas) > 1:
             return jsonify(despesas_schema.dump(despesas))
         elif despesas is not None and len(despesas) == 1:
