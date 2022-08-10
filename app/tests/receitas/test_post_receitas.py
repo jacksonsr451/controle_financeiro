@@ -25,8 +25,8 @@ class TestPostReceitas(TestCase):
     def test_should_be_create_a_receita_and_return_message_and_status_code(self):
         data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         value = jsonify({"message": "Dados inseridos com sucesso"})
-        data = {"descricao": "descricao 1", "valor": "100,00", "data": data_1}
-        response = self.app.post(self.URL, json=data)
+        response = self.app.post(self.URL, json={
+            "descricao": "descricao 1", "valor": "100,00", "data": data_1})
         self.assertEqual(value.get_json(), response.get_json())
         self.assertEqual(response.status_code, 200)
         
@@ -34,10 +34,9 @@ class TestPostReceitas(TestCase):
     def test_should_be_retorn_message_error_by_duplicate_data(self):
         data_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         value = jsonify({"message": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})
-        data_1 = {"descricao": "descricao 1", "valor": "100,00", "data": data_time}
-        data_2 = {"descricao": "descricao 1", "valor": "200,00", "data": data_time}
-        self.app.post(self.URL, json=data_1)
-        response = self.app.post(self.URL, json=data_2)
+        ReceitasModel.add(request={"descricao": "descricao 1", "valor": "100,00", "data": data_time})
+        response = self.app.post(self.URL, json={
+            "descricao": "descricao 1", "valor": "200,00", "data": data_time})
         self.assertEqual(value.get_json(), response.get_json())
         
         
