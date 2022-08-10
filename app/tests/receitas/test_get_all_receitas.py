@@ -35,13 +35,9 @@ class TestGetAllReceitas(TestCase):
     
     @staticmethod
     def include_data(data_1, data_2):
-        primeiro = ReceitasModel(descricao="Primeira receita", valor="200,00", data=data_1)
-        db.session.add(primeiro)
-        db.session.commit()
-        segundo = ReceitasModel(descricao="Segunda receita", valor="200,00", data=data_2)
-        db.session.add(segundo)
-        db.session.commit()    
-    
+        ReceitasModel.add(request={"descricao":"Primeira receita", "valor":"200,00", "data":data_1})
+        ReceitasModel.add(request={"descricao":"Segunda receita", "valor":"200,00", "data":data_2})
+        
     
     @staticmethod
     def get_json_test_response_is_equal(data_1, data_2):
