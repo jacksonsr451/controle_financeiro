@@ -1,4 +1,3 @@
-from dataclasses import replace
 from datetime import datetime
 from unittest import TestCase
 
@@ -26,17 +25,17 @@ class TestPostDespesas(TestCase):
     def test_should_be_create_a_despesa_with_categoria_default_and_return_message_and_status_code(self):
         data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         value = jsonify({"message": "Dados inseridos com sucesso"})
-        data = {"descricao": "descricao 1", "valor": "100,00", "data": data_1}
-        response = self.app.post(self.URL, json=data)
+        response = self.app.post(self.URL, json={
+            "descricao": "descricao 1", "valor": "100,00", "data": data_1})
         self.assertEqual(value.get_json(), response.get_json())
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)     
         
     
     def test_should_be_create_a_despesa_with_insert_a_categoria_and_verify_data(self):
         data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         value = jsonify({"message": "Dados inseridos com sucesso"})
         data = {"categoria": "Alimentação", "descricao": "descricao 1", "valor": "100,00", "data": data_1}
-        value_json = jsonify({"id": 1, "categoria": "Alimentação", "descricao": "descricao 1", "valor": "100,00", "data": data_1.__str__().replace(" ", "T")})
+        value_json = jsonify({"id": 1, "categoria": "Alimentação", "descricao": "descricao 1", "valor": "100,00", "data": data_1})
         response = self.app.post(self.URL, json=data)
         self.assertEqual(value.get_json(), response.get_json())
         self.assertEqual(response.status_code, 200)
@@ -45,10 +44,10 @@ class TestPostDespesas(TestCase):
     
     
     def test_should_be_retorn_message_error_by_duplicate_data(self):
-        data_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data_time = datetime.now()
         value = jsonify({"message": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})
-        data_1 = {"descricao": "descricao 1", "valor": "100,00", "data": data_time}
-        data_2 = {"descricao": "descricao 1", "valor": "200,00", "data": data_time}
+        data_1 = {"descricao": "descricao 1", "valor": "100,00", "data": data_time.strftime("%Y-%m-%d %H:%M:%S")}
+        data_2 = {"descricao": "descricao 1", "valor": "200,00", "data": data_time.strftime("%Y-%m-%d %H:%M:%S")}
         self.app.post(self.URL, json=data_1)
         response = self.app.post(self.URL, json=data_2)
         self.assertEqual(value.get_json(), response.get_json())

@@ -47,14 +47,14 @@ class TestGetAllDespesas(TestCase):
                 "categoria": "Outras",
                 "descricao": "Primeiro dado",
                 "valor": "200,00",
-                "data": data_1.strftime("%Y-%m-%d %H:%M:%S").replace(" ", "T")
+                "data": data_1.strftime("%Y-%m-%d %H:%M:%S")
             },
             {
                 "id": 2,
                 "categoria": "Outras",
                 "descricao": "Segundo dado",
                 "valor": "200,00",
-                "data": data_2.strftime("%Y-%m-%d %H:%M:%S").replace(" ", "T")
+                "data": data_2.strftime("%Y-%m-%d %H:%M:%S")
             }
         ])
     
