@@ -17,17 +17,14 @@ class ReceitasModel(db.Model):
     def __init__(self, descricao, valor, data) -> None:
         self.descricao = descricao
         self.valor = valor
-        if type(data) is not datetime:
-            self.data = self.convert_params_by_datetime(data)
-        else:
-            self.data = data
+        self.data = self.convert_params_by_datetime(data)
         
     
     @staticmethod
     def convert_params_by_datetime(value) -> datetime:
         if type(value) is str:
             return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
-        return value
+        return ReceitasModel.convert_params_by_datetime(value.strftime("%Y-%m-%d %H:%M:%S"))
     
     
     @staticmethod
