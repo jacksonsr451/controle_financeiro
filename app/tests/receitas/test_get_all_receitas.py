@@ -46,13 +46,13 @@ class TestGetAllReceitas(TestCase):
                 "id": 1,
                 "descricao": "Primeira receita",
                 "valor": "200,00",
-                "data": data_1.__str__().replace(" ", "T")
+                "data": data_1.strftime("%Y-%m-%d %H:%M:%S").replace(" ", "T")
             },
             {
                 "id": 2,
                 "descricao": "Segunda receita",
                 "valor": "200,00",
-                "data": data_2.__str__().replace(" ", "T")
+                "data": data_2.strftime("%Y-%m-%d %H:%M:%S").replace(" ", "T")
             }
         ])
     

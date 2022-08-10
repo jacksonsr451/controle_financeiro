@@ -19,17 +19,14 @@ class DespesasModel(db.Model):
             self.categoria = CategoriaEnum(categoria)
         self.descricao = descricao
         self.valor = valor
-        if type(data) is not datetime:
-            self.data = self.convert_params_by_datetime(data)
-        else:
-            self.data = data
-        
+        self.data = self.convert_params_by_datetime(data)
+            
     
     @staticmethod
     def convert_params_by_datetime(value):
         if type(value) is str:
             return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
-        return value
+        return DespesasModel.convert_params_by_datetime(value.strftime("%Y-%m-%d %H:%M:%S"))
     
     
     @staticmethod
