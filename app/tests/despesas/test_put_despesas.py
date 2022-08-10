@@ -32,23 +32,23 @@ class TestPutDespesas(TestCase):
         
         
     def test_should_be_return_message_success(self):
-        data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data_1 = datetime.now()
         DespesasModel.add(request={"descricao":"Primeita despesa", "valor":"200,00", "data":data_1})
         id = "1"
         value = jsonify({"message": "Dados atualizado"})
         response = self.app.put(self.URL + id, json={
-            "categoria": "Outros", "descricao": "descricao 1", "valor": "100,00", "data": data_1})
+            "categoria": "Outros", "descricao": "descricao 1", "valor": "100,00", "data": data_1.strftime("%Y-%m-%d %H:%M:%S")})
         self.assertEqual(value.get_json(), response.get_json())
     
     
     def test_should_be_return_message_duplicate_data(self):
-        data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data_1 = datetime.now()
         DespesasModel.add(request={"descricao":"Primeita despesa", "valor":"200,00", "data":data_1})
         DespesasModel.add(request={"descricao":"Segunda despesa", "valor":"300,00", "data":data_1})
         id = "2"
         value = jsonify({"message": "Não é permitido atualizar, verifique os dados inseridos e se não são repeditos!"}) 
         response = self.app.put(self.URL + id, json={
-            "categoria": "Outros", "descricao": "Primeita despesa", "valor": "300,00", "data": data_1})
+            "categoria": "Outros", "descricao": "Primeita despesa", "valor": "300,00", "data": data_1.strftime("%Y-%m-%d %H:%M:%S")})
         self.assertEqual(value.get_json(), response.get_json())
     
         

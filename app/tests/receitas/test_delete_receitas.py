@@ -23,7 +23,7 @@ class TestDeleteReceitas(TestCase):
         
         
     def test_should_be_delete_data_and_get_message_success(self):
-        data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data_1 = datetime.now()
         ReceitasModel.add(request={"descricao":"Primeira receita", "valor":"200,00", "data":data_1})
         value = jsonify({"success": "Registro deletado com sucesso para o id: {}".format("1")})
         response = self.app.delete(self.URL + "1")

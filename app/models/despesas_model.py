@@ -54,15 +54,15 @@ class DespesasModel(db.Model):
     def add(request) -> bool:
         try:
             if "categoria" in request:
-                new_receita = DespesasModel(categoria=request["categoria"], 
+                new_despesa = DespesasModel(categoria=request["categoria"], 
                                             descricao=request["descricao"], 
                                             valor=request["valor"], 
                                             data=request["data"])
             else:
-                new_receita = DespesasModel(descricao=request["descricao"], 
+                new_despesa = DespesasModel(descricao=request["descricao"], 
                                             valor=request["valor"], 
                                             data=request["data"])
-            db.session.add(new_receita)
+            db.session.add(new_despesa)
             db.session.commit()
             return True
         except:
