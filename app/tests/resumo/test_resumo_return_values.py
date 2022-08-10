@@ -10,7 +10,7 @@ from app.models.despesas_model import DespesasModel
 
 
 
-class TestDeleteReceitas(TestCase):
+class TestResumo(TestCase):
     URL = "http://localhost:5000/api/v1/resumo/"
     
     
@@ -39,7 +39,12 @@ class TestDeleteReceitas(TestCase):
             "total gasto por categoria": {
                 "Alimentação": "400,00",
                 "Saúde": "400,00",
-                "Educação": "400,00"
+                "Moradia": "0,00",
+                "Transporte": "0,00",
+                "Educação": "400,00",
+                "Lazer": "0,00",
+                "Imprevistos": "0,00",
+                "Outras": "0,00"
             }
         })
     
