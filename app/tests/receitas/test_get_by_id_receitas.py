@@ -24,9 +24,7 @@ class TestGetByIDReceitas(TestCase):
     
     def test_should_be_return_data_by_id(self):
         data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        data = ReceitasModel("Primeira receita", "200,00", data_1)
-        db.session.add(data)
-        db.session.commit()
+        ReceitasModel.add(request={"descricao":"Primeira receita", "valor":"200,00", "data":data_1})
         id = "1"
         value = jsonify({"id": 1, "descricao": "Primeira receita", "valor": "200,00", "data": data_1.replace(" ", "T")})
         response = self.app.get(self.URL + id)

@@ -24,12 +24,9 @@ class TestGetByIDDespesa(TestCase):
     
     def test_should_be_return_data_by_id(self):
         data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        data = DespesasModel(descricao="Primeira despesa", valor="200,00", data=data_1)
-        db.session.add(data)
-        db.session.commit()
-        id = "1"
+        DespesasModel.add(request={"descricao":"Primeira despesa", "valor":"200,00", "data":data_1})
         value = jsonify({"id": 1, "categoria": "Outras", "descricao": "Primeira despesa", "valor": "200,00", "data": data_1.replace(" ", "T")})
-        response = self.app.get(self.URL + id)
+        response = self.app.get(self.URL + "1")
         self.assertEqual(value.get_json(), response.get_json())
     
     
