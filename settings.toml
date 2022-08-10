@@ -1,6 +1,5 @@
 [default]
 TITLE="Controle Financeiro"
-TESTING=false
 SQLALCHEMY_DATABASE_URI="sqlite:///db.sqlite"
 SQLALCHEMY_TRACK_MODIFICATIONS = false
 
@@ -14,7 +13,7 @@ EXTENSIONS = [
 ]
 
 [production]
+SQLALCHEMY_DATABASE_URI=""
 
 [testing]
-TESTING=true
 SQLALCHEMY_DATABASE_URI="sqlite:///testdb.sqlite"
