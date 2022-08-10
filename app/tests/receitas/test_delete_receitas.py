@@ -24,12 +24,9 @@ class TestDeleteReceitas(TestCase):
         
     def test_should_be_delete_data_and_get_message_success(self):
         data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        data = ReceitasModel("Primeira receita", "200,00", data_1)
-        db.session.add(data)
-        db.session.commit()
-        id = "1"
-        value = jsonify({"success": "Registro deletado com sucesso para o id: {}".format(id)})
-        response = self.app.delete(self.URL + id)
+        ReceitasModel.add(request={"descricao":"Primeira receita", "valor":"200,00", "data":data_1})
+        value = jsonify({"success": "Registro deletado com sucesso para o id: {}".format("1")})
+        response = self.app.delete(self.URL + "1")
         self.assertEqual(value.get_json(), response.get_json())
     
         
