@@ -26,7 +26,7 @@ class TestGetByIDReceitas(TestCase):
         data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         ReceitasModel.add(request={"descricao":"Primeira receita", "valor":"200,00", "data":data_1})
         id = "1"
-        value = jsonify({"id": 1, "descricao": "Primeira receita", "valor": "200,00", "data": data_1.replace(" ", "T")})
+        value = jsonify({"id": 1, "descricao": "Primeira receita", "valor": "200,00", "data": data_1})
         response = self.app.get(self.URL + id)
         self.assertEqual(value.get_json(), response.get_json())
     

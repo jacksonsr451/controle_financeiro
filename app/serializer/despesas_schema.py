@@ -9,6 +9,7 @@ class DespesasSchema(ma.SQLAlchemyAutoSchema):
     
     class Meta:
         model = DespesasModel
+        fields = ('id', 'categoria', 'descricao', 'valor', 'data')
 
     
     id = ma.auto_field()

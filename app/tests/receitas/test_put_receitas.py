@@ -23,7 +23,7 @@ class TestPutDespesas(TestCase):
     
     
     def test_should_be_return_message_error_data_not_exist_in_db(self):
-        data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data_1 = datetime.now()
         data = {"descricao": "descricao 1", "valor": "100,00", "data": data_1}
         id = "1"
         value = jsonify({"message": "Não há registro para receitas de id: 1"})
@@ -32,23 +32,23 @@ class TestPutDespesas(TestCase):
         
         
     def test_should_be_return_message_success(self):
-        data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data_1 = datetime.now()
         ReceitasModel.add(request={"descricao":"Primeita receita", "valor":"200,00", "data":data_1})
         id = "1"
         value = jsonify({"message": "Dados atualizado"})
         response = self.app.put(self.URL + id, json={
-            "descricao": "descricao 1", "valor": "100,00", "data": data_1})
+            "descricao": "descricao 1", "valor": "100,00", "data": data_1.strftime("%Y-%m-%d %H:%M:%S")})
         self.assertEqual(value.get_json(), response.get_json())
         
         
     def test_should_be_return_message_duplicate_data(self):
-        data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data_1 = datetime.now()
         ReceitasModel.add(request={"descricao":"Primeita receita", "valor":"200,00", "data":data_1})
         ReceitasModel.add(request={"descricao":"Segunda receita", "valor":"300,00", "data":data_1})
         id = "2"
         value = jsonify({"message": "Não é permitido atualizar, verifique os dados inseridos e se não são repeditos!"}) 
         response = self.app.put(self.URL + id, json={
-            "descricao": "Primeita receita", "valor": "300,00", "data": data_1})
+            "descricao": "Primeita receita", "valor": "300,00", "data": data_1.strftime("%Y-%m-%d %H:%M:%S")})
         self.assertEqual(value.get_json(), response.get_json())
     
         
