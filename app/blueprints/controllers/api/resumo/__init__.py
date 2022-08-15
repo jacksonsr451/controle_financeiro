@@ -1,0 +1,1 @@
+from .resumo import Resumo
