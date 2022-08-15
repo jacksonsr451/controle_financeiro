@@ -72,15 +72,16 @@ class ReceitasModel(db.Model):
     
     
     @staticmethod
-    def put(id, values) -> bool:
-        data = ReceitasModel.get(id)
-        if data:    
+    def put(id, values) -> bool: 
+        try:    
+            data = ReceitasModel.get(id)
             data.descricao = values["descricao"]
             data.valor = values["valor"]
             data.data = ReceitasModel.convert_params_by_datetime(values["data"])
             db.session.commit()
             return True
-        return False
+        except:
+            return False
         
         
     @staticmethod

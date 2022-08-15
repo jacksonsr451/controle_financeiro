@@ -10,19 +10,16 @@ from app.models import ReceitasModel
 
 class Receitas(Resource):
     def get(self) -> jsonify:
-        response = None
         if "descricao" in request.args:
-            response = self.get_response_on_receitas(
+            return self.get_response_on_receitas(
                 ReceitasModel.filter_by_descicao(request.args["descricao"]))
-        else:        
-            response = self.get_response_on_receitas(ReceitasModel.all())
-        return response
+        return self.get_response_on_receitas(ReceitasModel.all())
     
     
     def get_response_on_receitas(self, receitas) -> jsonify:
-        if receitas is not None and len(receitas) > 1:
+        if len(receitas) > 1:
             return jsonify(ReceitasSchema(data=receitas, many=True).data)
-        elif receitas is not None and len(receitas) == 1:
+        elif len(receitas) == 1:
             return jsonify(ReceitasSchema(receitas[0]).data)
         return jsonify({"message": "Não há registros em receitas"})
     

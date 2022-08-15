@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from flask_restful import Resource, reqparse
+from flask_restful import Resource
 
 from ....requets.despesas_request import DespesasRequest
 from ....serializer.despesas_schema import DespesasSchema
@@ -17,10 +17,10 @@ class Despesas(Resource):
     
     
     def get_response_on_despesas(self, despesas) -> jsonify:
-        if despesas is not None and len(despesas) > 1:
+        if len(despesas) > 1:
             return jsonify(DespesasSchema(data=despesas, many=True).data)
-        elif despesas is not None and len(despesas) == 1:
-            return jsonify(DespesasSchema(data=despesas).data)
+        elif len(despesas) == 1:
+            return jsonify(DespesasSchema(data=despesas[0]).data)
         return jsonify({"message": "Não há registros em despesas"})
     
     
