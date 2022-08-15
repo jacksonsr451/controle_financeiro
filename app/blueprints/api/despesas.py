@@ -42,21 +42,10 @@ class Despesas(Resource):
     def post(self) -> jsonify:
         req_request = despesa_post_request.parse_args()
         despesas = DespesasModel.all()
-        if not self.validate_despesas_by_post(despesas=despesas, req_request=req_request):
-            return jsonify({"message": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})
-        elif DespesasModel.add(request=req_request):
+        if DespesasModel.add(request=req_request):
             return jsonify({"message": "Dados inseridos com sucesso"})    
+        return jsonify({"message": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})
     
-        
-    def validate_despesas_by_post(self, despesas, req_request) -> bool:
-        if len(despesas) > 0:
-            for despesa in despesas:
-                data_atual = despesa.data.__str__().split('-')
-                if despesa.descricao.__eq__(req_request["descricao"]):
-                    if data_atual[1].__eq__(req_request["data"].split('-')[1])  \
-                        and data_atual[0].__eq__(req_request["data"].split('-')[0]):
-                        return False
-        return True
 
 
 class DespesasByID(Resource):
@@ -76,22 +65,9 @@ class DespesasByID(Resource):
         req_request = despesa_put_request.parse_args()
         if DespesasModel.get(id) is None:
             return jsonify({"message": "Não há registro para despesas de id: {}".format(id)})  
-        if self.validate_despesa_by_put(
-            despesas=DespesasModel.all(), req_request=req_request) and  \
-                DespesasModel.put(id, req_request):
+        if DespesasModel.put(id, req_request):
             return jsonify({"message": "Dados atualizado"})  
         return jsonify({"message": "Não é permitido atualizar, verifique os dados inseridos e se não são repeditos!"})
-        
-        
-    def validate_despesa_by_put(self, despesas, req_request) -> bool:
-        if len(despesas) > 0:
-            for despesa in despesas:
-                data_atual = despesa.data.__str__().split('-')
-                if despesa.descricao.__eq__(req_request["descricao"]):
-                    if data_atual[1].__eq__(req_request["data"].split('-')[1])  \
-                        and data_atual[0].__eq__(req_request["data"].split('-')[0]):
-                        return False
-        return True
 
 
 class DespesasByAnoEMes(Resource):
