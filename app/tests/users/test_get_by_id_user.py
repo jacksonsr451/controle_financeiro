@@ -8,7 +8,7 @@ from app.models.users_model import UsersModel
 
 
 
-class TestPutUsers(TestCase):
+class TestGetByIDDespesa(TestCase):
     URL = "http://localhost:5000/api/v1/usuarios/"
     
     
@@ -21,20 +21,20 @@ class TestPutUsers(TestCase):
         db.create_all()
     
     
-    def test_should_be_return_message_error_data_not_exist_in_db(self):
-        response = self.app.put(self.URL + "1", json={
-            "username": "username", "email": "email@email.com"})
-        self.assertEqual(response.get_json(), 
-                         {"error": "Não há registro para usuários de id: 1!"})
-        
-        
-    def test_should_be_return_message_success(self):
+    def test_should_be_return_data_by_id(self):
         UsersModel.add(request={"username":"username", "email":"email@email.com", "password": "123456"})
-        response = self.app.put(self.URL + "1", json={
-            "username": "username", "email": "email@gmail.com"})
-        self.assertEqual(response.get_json(),
-                         {"message": "Usuário atualizado!"})
+        response = self.app.get(self.URL + "1")
+        self.assertEqual(response.get_json(), {
+            "id": 1, "username": "username", "email": "email@email.com"
+        })
     
+    
+    def test_should_be_return_message_error(self):
+        response = self.app.get(self.URL + "1")
+        self.assertEqual(response.get_json(), {
+            "error": "Registro não existe para este id: 1"
+        })
+        
         
     def tearDown(self) -> None:
         db.session.remove()

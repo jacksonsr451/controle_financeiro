@@ -12,13 +12,15 @@ from .....models.users_model import UsersModel
 
 class UsersById(Resource):
     def get(self, id) -> jsonify:
-        ...
+        despesa = UsersModel.get(id)
+        if despesa is not None: return jsonify(UsersSchema(data=despesa).data)
+        return jsonify({"error": "Registro não existe para este id: {}".format(id)})   
         
     
     def put(self, id) -> jsonify:
         if UsersModel.put(id, UsersRequest.get()):
             return jsonify({"message": "Usuário atualizado!"})  
-        return jsonify({"message": "Não há registro para usuários de id: {}!".format(id)})
+        return jsonify({"error": "Não há registro para usuários de id: {}!".format(id)})
 
         
     def delete(self, id) -> jsonify:
