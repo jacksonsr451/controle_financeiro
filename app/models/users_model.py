@@ -37,4 +37,15 @@ class UsersModel(db.Model):
     @staticmethod
     def all():
         return UsersModel.query.all()
+    
+    
+    @staticmethod
+    def delete(id) -> bool:
+        user = UsersModel.query.get(id)
+        if user is not None:
+            db.session.delete(user)
+            db.session.commit()
+            return True
+        else:
+            return False
         

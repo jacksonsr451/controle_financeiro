@@ -1,5 +1,7 @@
 from flask import Blueprint 
 from flask_restful import Api
+
+from .users import UsersById
 from .despesas import Despesas, DespesasByAnoEMes, DespesasByID
 
 from .receitas import Receitas, ReceitaByID, ReceitasByAnoEMes
@@ -19,6 +21,7 @@ api.add_resource(DespesasByAnoEMes, "/despesas/<ano>/<mes>")
 api.add_resource(ReceitasByAnoEMes, "/receitas/<ano>/<mes>")
 api.add_resource(Resumo, "/resumo/<ano>/<mes>")
 api.add_resource(Users, "/usuarios")
+api.add_resource(UsersById, "/usuarios/<id>")
 
 
 def init_app(app):
