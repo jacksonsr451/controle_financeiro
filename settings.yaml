@@ -9,7 +9,7 @@ default:
         - app.ext.flask_migrate:init_app
         - app.ext.flask_marshmallow:init_app
 
-        - app.blueprints.api:init_app
+        - app.blueprints.controllers.api:init_app
 
 
 production:

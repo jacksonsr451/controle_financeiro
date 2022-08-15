@@ -7,6 +7,9 @@ from app.ext.flask_sqlalchemy import db
 
 class ReceitasModel(db.Model):
     __tablename__ = "receitas"
+    __table_args__ = (
+        db.UniqueConstraint('descricao', 'data', name='unique_descricao_for_data'),
+    )
     
     id =  db.Column(db.Integer, primary_key=True, autoincrement=True)
     descricao = db.Column(db.Text, nullable=False)
