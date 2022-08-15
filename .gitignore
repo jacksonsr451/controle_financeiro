@@ -126,3 +126,5 @@ cython_debug/
 db.sqlite
 
 testdb.sqlite
+
+.secrets.*

@@ -6,6 +6,9 @@ from app.ext.flask_marshmallow import ma
 
 
 class DespesasSchema(ma.SQLAlchemyAutoSchema):
+    def __init__(self, data=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.data = self.dump(data)
     
     class Meta:
         model = DespesasModel

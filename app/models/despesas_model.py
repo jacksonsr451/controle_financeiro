@@ -6,6 +6,9 @@ from app.ext.flask_sqlalchemy import db
 
 class DespesasModel(db.Model):
     __tablename__ = "despesas"
+    __table_args__ = (
+        db.UniqueConstraint('descricao', 'data', name='unique_descricao_for_data'),
+    )
     
     id =  db.Column(db.Integer, primary_key=True, autoincrement=True)
     categoria = db.Column(db.Enum(CategoriaEnum), nullable=False, default=CategoriaEnum.OUTRAS)
@@ -77,15 +80,16 @@ class DespesasModel(db.Model):
     
     @staticmethod
     def put(id, values) -> bool:
-        data = DespesasModel.get(id)
-        if data:
+        try:
+            data = DespesasModel.get(id)
             data.categoria = values["categoria"]   
             data.descricao = values["descricao"]
             data.valor = values["valor"]
             data.data = DespesasModel.convert_params_by_datetime(values["data"])
             db.session.commit()
             return True
-        return False
+        except:
+            return False
     
     
     @staticmethod
