@@ -33,3 +33,8 @@ class UsersModel(db.Model):
         except:
             return False
         
+    
+    @staticmethod
+    def all():
+        return UsersModel.query.all()
+        
