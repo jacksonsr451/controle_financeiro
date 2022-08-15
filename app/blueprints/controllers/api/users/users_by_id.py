@@ -16,7 +16,9 @@ class UsersById(Resource):
         
     
     def put(self, id) -> jsonify:
-        ...
+        if UsersModel.put(id, UsersRequest.get()):
+            return jsonify({"message": "Usuário atualizado!"})  
+        return jsonify({"message": "Não há registro para usuários de id: {}!".format(id)})
 
         
     def delete(self, id) -> jsonify:

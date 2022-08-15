@@ -7,7 +7,7 @@ class UsersRequest():
         self.request = reqparse.RequestParser()
         self.request.add_argument("username", type=str, help="Username é um campor obrigatório e do tipo str.", required=True)
         self.request.add_argument("email", type=str, help="E-mail é um campor obrigatório e do tipo str.", required=True)
-        self.request.add_argument("password", help="Password é um campor obrigatório e do tipo str.", required=True)
+        self.request.add_argument("password", required=False)
 
 
     @staticmethod
