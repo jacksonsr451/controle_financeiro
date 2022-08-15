@@ -1,14 +1,14 @@
 from flask import Blueprint 
 from flask_restful import Api
-from app.blueprints.api.despesas import Despesas, DespesasByAnoEMes, DespesasByID
+from .despesas import Despesas, DespesasByAnoEMes, DespesasByID
 
-from app.blueprints.api.receita import Receita, ReceitaByID, ReceitasByAnoEMes
-from app.blueprints.api.resumo import Resumo
+from .receitas import Receitas, ReceitaByID, ReceitasByAnoEMes
+from .resumo import Resumo
 
 
 blueprint = Blueprint("api", __name__, url_prefix="/api/v1")
 api = Api(blueprint)
-api.add_resource(Receita, "/receitas")
+api.add_resource(Receitas, "/receitas")
 api.add_resource(ReceitaByID, "/receitas/<id>")
 api.add_resource(Despesas, "/despesas")
 api.add_resource(DespesasByID, "/despesas/<id>")

@@ -23,31 +23,6 @@ despesas_schema = DespesasSchema(many=True)
 
 
 
-class Despesas(Resource):
-    def get(self) -> jsonify:
-        if "descricao" in request.args:
-            return self.get_response_on_despesas(
-                DespesasModel.filter_by_descicao(request.args["descricao"]))       
-        return self.get_response_on_despesas(DespesasModel.all())
-    
-    
-    def get_response_on_despesas(self, despesas) -> jsonify:
-        if despesas is not None and len(despesas) > 1:
-            return jsonify(despesas_schema.dump(despesas))
-        elif despesas is not None and len(despesas) == 1:
-            return jsonify(despesa_schema.dump(despesas[0]))
-        return jsonify({"message": "Não há registros em despesas"})
-    
-    
-    def post(self) -> jsonify:
-        req_request = despesa_post_request.parse_args()
-        despesas = DespesasModel.all()
-        if DespesasModel.add(request=req_request):
-            return jsonify({"message": "Dados inseridos com sucesso"})    
-        return jsonify({"message": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})
-    
-
-
 class DespesasByID(Resource):
     def get(self, id):
         despesa = DespesasModel.get(id)
@@ -68,18 +43,3 @@ class DespesasByID(Resource):
         if DespesasModel.put(id, req_request):
             return jsonify({"message": "Dados atualizado"})  
         return jsonify({"message": "Não é permitido atualizar, verifique os dados inseridos e se não são repeditos!"})
-
-
-class DespesasByAnoEMes(Resource):
-    def get(self, ano, mes):
-        return self.get_response_on_despesas(
-            DespesasModel.filter_by_ano_and_mes(ano=ano, mes=mes)
-        )
-    
-    
-    def get_response_on_despesas(self, despesas) -> jsonify:
-        if despesas is not None and len(despesas) > 1:
-            return jsonify(despesas_schema.dump(despesas))
-        elif despesas is not None and len(despesas) == 1:
-            return jsonify(despesa_schema.dump(despesas[0]))
-        return jsonify({"message": "Não há registros em despesas"})
