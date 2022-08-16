@@ -4,6 +4,7 @@ from flask import jsonify
 
 from app import app
 from app.ext.flask_sqlalchemy import db
+from ...models.users_model import UsersModel
 
 
 
@@ -18,6 +19,17 @@ class TestAddUsers(TestCase):
         self.ctx.push()
         self.app = app_test.test_client()
         db.create_all()
+        self.token = self.get_access_token()
+        
+        
+    def get_access_token(self):
+        UsersModel.add(request={
+            "username": "username_teste", "email": "email_teste@gmail.com", "password": "123456"
+        })
+        
+        return self.app.post('/api/v1/auth/login', json={
+            'email': "email_teste@gmail.com", "password": "123456"
+        }).get_json()["token"]
 
     
     def test_if_get_all_users(self):
@@ -27,12 +39,13 @@ class TestAddUsers(TestCase):
         self.app.post(self.URL, json={
             "username": "newuserasd", "email": "userasd@email.com", "password": "123456"
         })
-        response = self.app.get(self.URL)
-        self.assertEqual(len(response.get_json()), 2)
+        response = self.app.get(self.URL, headers={'Authorization': 'Bearer '+self.token})
+        self.assertEqual(len(response.get_json()), 3)
         
         
     def test_should_be_return_error(self):
-        response = self.app.get(self.URL)
+        UsersModel.delete(1)
+        response = self.app.get(self.URL, headers={'Authorization': 'Bearer '+self.token})
         self.assertEqual(response.get_json(), {
             "error": "Não há usuários cadastrados!"
         })

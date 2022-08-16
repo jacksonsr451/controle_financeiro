@@ -1,5 +1,6 @@
 from flask import jsonify
 from flask_restful import Resource
+from flask_jwt_extended import jwt_required
 
 from ....serializer.users_schema import UsersSchema
 
@@ -11,6 +12,7 @@ from .....models.users_model import UsersModel
 
 
 class Users(Resource):
+    @jwt_required()
     def get(self) -> jsonify:
         users = UsersModel.all()
         if len(users) != 0:

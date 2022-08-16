@@ -19,20 +19,31 @@ class TestGetByIDDespesa(TestCase):
         self.ctx.push()
         self.app = app_test.test_client()
         db.create_all()
+        self.token = self.get_access_token()
+        
+        
+    def get_access_token(self):
+        UsersModel.add(request={
+            "username": "username_teste", "email": "email_teste@gmail.com", "password": "123456"
+        })
+        
+        return self.app.post('/api/v1/auth/login', json={
+            'email': "email_teste@gmail.com", "password": "123456"
+        }).get_json()["token"]
     
     
     def test_should_be_return_data_by_id(self):
         UsersModel.add(request={"username":"username", "email":"email@email.com", "password": "123456"})
-        response = self.app.get(self.URL + "1")
+        response = self.app.get(self.URL + "2", headers={'Authorization': 'Bearer '+self.token})
         self.assertEqual(response.get_json(), {
-            "id": 1, "username": "username", "email": "email@email.com"
+            "id": 2, "username": "username", "email": "email@email.com"
         })
     
     
     def test_should_be_return_message_error(self):
-        response = self.app.get(self.URL + "1")
+        response = self.app.get(self.URL + "2", headers={'Authorization': 'Bearer '+self.token})
         self.assertEqual(response.get_json(), {
-            "error": "Registro não existe para este id: 1"
+            "error": "Registro não existe para este id: 2"
         })
         
         
