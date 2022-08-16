@@ -10,6 +10,8 @@ class UsersModel(db.Model):
     username = db.Column(db.String(80), nullable=False, unique=True)
     email = db.Column(db.String(80), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
+    despesas = db.relationship('DespesasModel', backref='users', lazy=True)
+    receitas = db.relationship('ReceitasModel', backref='users', lazy=True)
     
     
     def __init__(self, username=None, email=None, password=None) -> None:
