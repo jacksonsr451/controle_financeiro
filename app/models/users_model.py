@@ -12,7 +12,7 @@ class UsersModel(db.Model):
     password = db.Column(db.String(80), nullable=False)
     
     
-    def __init__(self, username, email, password) -> None:
+    def __init__(self, username=None, email=None, password=None) -> None:
         self.username = username
         self.email = email
         self.password = generate_password_hash(password)
@@ -47,5 +47,22 @@ class UsersModel(db.Model):
             db.session.commit()
             return True
         else:
+            return False
+    
+    
+    @staticmethod
+    def get(id):
+        return UsersModel.query.get(id)
+    
+    
+    @staticmethod
+    def put(id, values) -> bool:
+        try:
+            data = UsersModel.get(id)
+            data.username = values["username"]   
+            data.email = values["email"]
+            db.session.commit()
+            return True
+        except:
             return False
         
