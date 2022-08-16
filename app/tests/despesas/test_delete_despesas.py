@@ -6,6 +6,7 @@ from flask import jsonify
 from app import app
 from app.ext.flask_sqlalchemy import db
 from app.models.despesas_model import DespesasModel
+from ...models.users_model import UsersModel
 
 
 
@@ -20,19 +21,30 @@ class TestDeleteDespesa(TestCase):
         self.ctx.push()
         self.app = app_test.test_client()
         db.create_all()
+        self.token = self.get_access_token()
+        
+        
+    def get_access_token(self):
+        UsersModel.add(request={
+            "username": "username", "email": "email@gmail.com", "password": "123456"
+        })
+        
+        return self.app.post('/api/v1/auth/login', json={
+            'email': "email@gmail.com", "password": "123456"
+        }).get_json()["token"]
         
         
     def test_should_be_delete_data_and_get_message_success(self):
         DespesasModel.add(request={"descricao":"Primeira despesa", "valor":"200,00", "data":datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
         value = jsonify({"success": "Registro deletado com sucesso para o id: {}".format("1")})
-        response = self.app.delete(self.URL + "1")
+        response = self.app.delete(self.URL + "1", headers={'Authorization': 'Bearer '+self.token})
         self.assertEqual(value.get_json(), response.get_json())
         
         
     def test_should_be_return_message_error(self):
         id = "1"
         value = jsonify({"message": "Registro não existe para este id: {}".format(id)})
-        response = self.app.delete(self.URL + id)
+        response = self.app.delete(self.URL + id, headers={'Authorization': 'Bearer '+self.token})
         self.assertEqual(value.get_json(), response.get_json())
     
         
