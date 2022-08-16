@@ -6,6 +6,7 @@ from flask import jsonify
 from app import app
 from app.ext.flask_sqlalchemy import db
 from app.models.despesas_model import DespesasModel
+from ...models.users_model import UsersModel
 
 
 
@@ -20,16 +21,27 @@ class TestGetAllDespesas(TestCase):
         self.ctx.push()
         self.app = app_test.test_client()
         db.create_all()
+        self.token = self.get_access_token()
+        
+        
+    def get_access_token(self):
+        UsersModel.add(request={
+            "username": "username", "email": "email@gmail.com", "password": "123456"
+        })
+        
+        return self.app.post('/api/v1/auth/login', json={
+            'email': "email@gmail.com", "password": "123456"
+        }).get_json()["token"]
         
     
     def test_should_be_return_message_error(self):
         value = jsonify({"message": "Não há registros em despesas"})
-        response = self.app.get(self.URL)
+        response = self.app.get(self.URL, headers={'Authorization': 'Bearer '+self.token})
         self.assertEqual(value.get_json(), response.get_json())
         
         
     def test_should_be_request_return_status_code_200(self):
-        response = self.app.get(self.URL)
+        response = self.app.get(self.URL, headers={'Authorization': 'Bearer '+self.token})
         self.assertEqual(response.status_code, 200)
         
     
@@ -64,7 +76,7 @@ class TestGetAllDespesas(TestCase):
         data_2 = datetime.now()
         self.include_data(data_1, data_2)
         value = self.get_json_test_response_is_equal(data_1, data_2)
-        response = self.app.get(self.URL)
+        response = self.app.get(self.URL, headers={'Authorization': 'Bearer '+self.token})
         self.assertEqual(value.get_json(), response.get_json())
         
         

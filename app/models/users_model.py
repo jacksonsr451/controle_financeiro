@@ -19,8 +19,11 @@ class UsersModel(db.Model):
         
     
     @staticmethod
-    def verify_password(passowrd):
-        return check_password_hash(UsersModel.password,passowrd)
+    def verify_login(request) -> bool:
+        user = UsersModel.query.filter_by(email=request["email"]).first()
+        if not check_password_hash(user.password, request["password"]):
+            return False
+        return True
     
     
     @staticmethod
@@ -65,4 +68,4 @@ class UsersModel(db.Model):
             return True
         except:
             return False
-        
+    

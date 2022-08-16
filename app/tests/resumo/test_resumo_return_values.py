@@ -7,6 +7,7 @@ from app import app
 from app.ext.flask_sqlalchemy import db
 from app.models.receitas_model import ReceitasModel
 from app.models.despesas_model import DespesasModel
+from ...models.users_model import UsersModel
 
 
 
@@ -21,12 +22,23 @@ class TestResumo(TestCase):
         self.ctx.push()
         self.app = app_test.test_client()
         db.create_all()
+        self.token = self.get_access_token()
+        
+        
+    def get_access_token(self):
+        UsersModel.add(request={
+            "username": "username", "email": "email@gmail.com", "password": "123456"
+        })
+        
+        return self.app.post('/api/v1/auth/login', json={
+            'email': "email@gmail.com", "password": "123456"
+        }).get_json()["token"]
         
         
     def test_should_be_return_values_by_ano_and_mes(self):
         self.insert_data()
         value = self.get_value()
-        response = self.app.get(self.URL + "2022/08")
+        response = self.app.get(self.URL + "2022/08", headers={'Authorization': 'Bearer '+self.token})
         self.assertEqual(value.get_json(), response.get_json())
         
     

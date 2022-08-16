@@ -6,6 +6,7 @@ from flask import jsonify
 from app import app
 from app.ext.flask_sqlalchemy import db
 from app.models.despesas_model import DespesasModel
+from ...models.users_model import UsersModel
 
 
 
@@ -20,13 +21,24 @@ class TestGetByDescricaoDespesas(TestCase):
         self.ctx.push()
         self.app = app_test.test_client()
         db.create_all()
+        self.token = self.get_access_token()
+        
+        
+    def get_access_token(self):
+        UsersModel.add(request={
+            "username": "username", "email": "email@gmail.com", "password": "123456"
+        })
+        
+        return self.app.post('/api/v1/auth/login', json={
+            'email': "email@gmail.com", "password": "123456"
+        }).get_json()["token"]
         
     
     def test_should_be_filter_by_args_descricao(self):
         data_1 = datetime.now()
         DespesasModel.add({"descricao": "Primeira despesa", "valor":"200,00", "data":data_1})
         value = jsonify({"id": 1, "categoria": "Outras", "descricao":"Primeira despesa", "valor":"200,00", "data":data_1.strftime("%Y-%m-%d %H:%M:%S")})
-        data = self.app.get(self.URL + "Primeira")
+        data = self.app.get(self.URL + "Primeira", headers={'Authorization': 'Bearer '+self.token})
         self.assertEqual(value.get_json(), data.get_json())
         
         
