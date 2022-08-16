@@ -6,6 +6,7 @@ from flask import jsonify
 from app import app
 from app.ext.flask_sqlalchemy import db
 from app.models.receitas_model import ReceitasModel
+from ...models.users_model import UsersModel
 
 
 
@@ -20,6 +21,17 @@ class TestPutDespesas(TestCase):
         self.ctx.push()
         self.app = app_test.test_client()
         db.create_all()
+        self.token = self.get_access_token()
+        
+        
+    def get_access_token(self):
+        UsersModel.add(request={
+            "username": "username", "email": "email@gmail.com", "password": "123456"
+        })
+        
+        return self.app.post('/api/v1/auth/login', json={
+            'email': "email@gmail.com", "password": "123456"
+        }).get_json()["token"]
     
     
     def test_should_be_return_message_error_data_not_exist_in_db(self):
@@ -27,7 +39,7 @@ class TestPutDespesas(TestCase):
         data = {"descricao": "descricao 1", "valor": "100,00", "data": data_1}
         id = "1"
         value = jsonify({"message": "Não há registro para receitas de id: 1"})
-        response = self.app.put(self.URL + id, json=data)
+        response = self.app.put(self.URL + id, json=data, headers={'Authorization': 'Bearer '+self.token})
         self.assertEqual(value.get_json(), response.get_json())
         
         
@@ -37,7 +49,8 @@ class TestPutDespesas(TestCase):
         id = "1"
         value = jsonify({"message": "Dados atualizado"})
         response = self.app.put(self.URL + id, json={
-            "descricao": "descricao 1", "valor": "100,00", "data": data_1.strftime("%Y-%m-%d %H:%M:%S")})
+            "descricao": "descricao 1", "valor": "100,00", "data": data_1.strftime("%Y-%m-%d %H:%M:%S")
+        }, headers={'Authorization': 'Bearer '+self.token})
         self.assertEqual(value.get_json(), response.get_json())
         
         
@@ -48,7 +61,8 @@ class TestPutDespesas(TestCase):
         id = "2"
         value = jsonify({"message": "Não é permitido atualizar, verifique os dados inseridos e se não são repeditos!"}) 
         response = self.app.put(self.URL + id, json={
-            "descricao": "Primeita receita", "valor": "300,00", "data": data_1.strftime("%Y-%m-%d %H:%M:%S")})
+            "descricao": "Primeita receita", "valor": "300,00", "data": data_1.strftime("%Y-%m-%d %H:%M:%S")
+        }, headers={'Authorization': 'Bearer '+self.token})
         self.assertEqual(value.get_json(), response.get_json())
     
         

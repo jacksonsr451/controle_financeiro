@@ -6,6 +6,7 @@ from flask import jsonify
 from app import app
 from app.ext.flask_sqlalchemy import db
 from app.models.receitas_model import ReceitasModel
+from ...models.users_model import UsersModel
 
 
 
@@ -20,13 +21,25 @@ class TestPostReceitas(TestCase):
         self.ctx.push()
         self.app = app_test.test_client()
         db.create_all()
+        self.token = self.get_access_token()
+        
+        
+    def get_access_token(self):
+        UsersModel.add(request={
+            "username": "username", "email": "email@gmail.com", "password": "123456"
+        })
+        
+        return self.app.post('/api/v1/auth/login', json={
+            'email': "email@gmail.com", "password": "123456"
+        }).get_json()["token"]
         
         
     def test_should_be_create_a_receita_and_return_message_and_status_code(self):
         data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         value = jsonify({"message": "Dados inseridos com sucesso"})
         response = self.app.post(self.URL, json={
-            "descricao": "descricao 1", "valor": "100,00", "data": data_1})
+            "descricao": "descricao 1", "valor": "100,00", "data": data_1
+        }, headers={'Authorization': 'Bearer '+self.token})
         self.assertEqual(value.get_json(), response.get_json())
         self.assertEqual(response.status_code, 200)
         
@@ -36,7 +49,8 @@ class TestPostReceitas(TestCase):
         value = jsonify({"message": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})
         ReceitasModel.add(request={"descricao": "descricao 1", "valor": "100,00", "data": data_time})
         response = self.app.post(self.URL, json={
-            "descricao": "descricao 1", "valor": "200,00", "data": data_time})
+            "descricao": "descricao 1", "valor": "200,00", "data": data_time
+        }, headers={'Authorization': 'Bearer '+self.token})
         self.assertEqual(value.get_json(), response.get_json())
         
         

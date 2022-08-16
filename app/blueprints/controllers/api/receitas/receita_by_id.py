@@ -1,5 +1,6 @@
-from flask import jsonify, request
-from flask_restful import Resource, reqparse
+from flask import jsonify
+from flask_restful import Resource
+from flask_jwt_extended import jwt_required
 
 from ....requets.receitas_request import ReceitasRequest
 from ....serializer.receitas_schema import ReceitasSchema
@@ -9,18 +10,21 @@ from app.models import ReceitasModel
 
 
 class ReceitaByID(Resource):
+    @jwt_required()
     def get(self, id) -> jsonify:
         receita = ReceitasModel.get(id)
         if receita is not None: return jsonify(ReceitasSchema(data=receita).data)
         return jsonify({"message": "Registro não existe para este id: {}".format(id)})
         
         
+    @jwt_required()
     def delete(self, id) -> jsonify:
         if ReceitasModel.delete(id):
             return jsonify({"success": "Registro deletado com sucesso para o id: {}".format(id)})
         return jsonify({"message": "Registro não existe para este id: {}".format(id)})
         
     
+    @jwt_required()
     def put(self, id) -> jsonify:    
         put_request = ReceitasRequest.get()
         if ReceitasModel.get(id) is None:
