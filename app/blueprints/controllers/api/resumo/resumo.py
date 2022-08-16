@@ -1,5 +1,6 @@
-from flask import jsonify, request
-from flask_restful import Resource, reqparse
+from flask import jsonify
+from flask_restful import Resource
+from flask_jwt_extended import jwt_required
 
 from app.models.despesas_model import DespesasModel
 from app.models.receitas_model import ReceitasModel
@@ -7,6 +8,7 @@ from app.models.receitas_model import ReceitasModel
 
 
 class Resumo(Resource):
+    @jwt_required()
     def get(self, ano, mes):
         total_receitas = self.get_total_receitas(ano, mes)
         total_despesas = self.get_total_despesas(ano, mes)
