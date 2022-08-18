@@ -1,0 +1,4 @@
+postgress_data
+build
+docker-compose.yml
+Dockerfile

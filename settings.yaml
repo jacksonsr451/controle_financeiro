@@ -14,7 +14,7 @@ default:
 
 
 production:
-    SQLALCHEMY_DATABASE_URI:
+    SQLALCHEMY_DATABASE_URI: postgresql://controle_financeiro:controle_financeiro@db/controle_financeiro_dev
 
 testing:
     SQLALCHEMY_DATABASE_URI: sqlite:///testdb.sqlite

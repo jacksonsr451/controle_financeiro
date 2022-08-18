@@ -128,3 +128,5 @@ db.sqlite
 testdb.sqlite
 
 .secrets.*
+
+postgres_data
