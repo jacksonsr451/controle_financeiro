@@ -35,9 +35,11 @@ class TestGetByDescricaoDespesas(TestCase):
         
     
     def test_should_be_filter_by_args_descricao(self):
-        data_1 = datetime.now()
-        DespesasModel.add({"descricao": "Primeira despesa", "valor":"200,00", "data":data_1})
-        value = jsonify({"id": 1, "categoria": "Outras", "descricao":"Primeira despesa", "valor":"200,00", "data":data_1.strftime("%Y-%m-%d %H:%M:%S")})
+        data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.app.post('/api/v1/despesas', json={
+            "descricao": "Primeira despesa", "valor":"200,00", "data":data_1
+        }, headers={'Authorization': 'Bearer '+self.token})
+        value = jsonify({"id": 1, "categoria": "Outras", "descricao":"Primeira despesa", "valor":"200,00", "data":data_1})
         data = self.app.get(self.URL + "Primeira", headers={'Authorization': 'Bearer '+self.token})
         self.assertEqual(value.get_json(), data.get_json())
         

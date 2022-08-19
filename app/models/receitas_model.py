@@ -1,7 +1,7 @@
-from ast import Return
-from flask import jsonify
+from flask_jwt_extended import get_jwt_identity
 from datetime import datetime
 from app.ext.flask_sqlalchemy import db
+from app.models.users_model import UsersModel
 
 
 
@@ -39,18 +39,28 @@ class ReceitasModel(db.Model):
     
     @staticmethod
     def filter_by_descicao(descricao) -> list:
-        return ReceitasModel.query.filter(
+        user = UsersModel.get_user_by_email(email=get_jwt_identity()["email"])
+        return ReceitasModel.query\
+                .filter(
+                    ReceitasModel.user_id == user.id
+                )\
+                .filter(
                     ReceitasModel.descricao.like(
                         "%{}%".format(descricao))
-                    ).all()
+                ).all()
         
     
     
     @staticmethod
     def filter_by_ano_and_mes(ano, mes) -> list:
-        return ReceitasModel.query.filter(
-                    ReceitasModel.data.like(
-                        "%{}-{}%".format(ano, mes))
+        user = UsersModel.get_user_by_email(email=get_jwt_identity()["email"])
+        return ReceitasModel.query\
+                    .filter(
+                        ReceitasModel.user_id == user.id
+                    )\
+                    .filter(
+                            ReceitasModel.data.like(
+                                "%{}-{}%".format(ano, mes))
                     ).all()
     
     
@@ -74,8 +84,14 @@ class ReceitasModel(db.Model):
             
     @staticmethod
     def get(id) -> dict:
-        receita = ReceitasModel.query.get(id)
-        return receita
+        user = UsersModel.get_user_by_email(email=get_jwt_identity()["email"])
+        return ReceitasModel.query\
+                    .filter(
+                        ReceitasModel.user_id == user.id
+                    )\
+                    .filter_by(
+                        id=id
+                    ).first()
     
     
     @staticmethod
@@ -93,7 +109,14 @@ class ReceitasModel(db.Model):
         
     @staticmethod
     def delete(id) -> bool:
-        receita = ReceitasModel.get(id)
+        user = UsersModel.get_user_by_email(email=get_jwt_identity()["email"])
+        receita = ReceitasModel.query\
+                    .filter(
+                        ReceitasModel.user_id == user.id
+                    )\
+                    .filter_by(
+                        id=id
+                    ).first()
         if receita is not None:
             db.session.delete(receita)
             db.session.commit()

@@ -37,4 +37,3 @@ class Despesas(Resource):
             return jsonify({"message": "Dados inseridos com sucesso"})    
         return jsonify({"message": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})
     
-

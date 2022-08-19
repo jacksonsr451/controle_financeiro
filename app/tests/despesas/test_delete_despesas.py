@@ -35,7 +35,10 @@ class TestDeleteDespesa(TestCase):
         
         
     def test_should_be_delete_data_and_get_message_success(self):
-        DespesasModel.add(request={"descricao":"Primeira despesa", "valor":"200,00", "data":datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
+        data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.app.post('/api/v1/despesas', json={
+            "descricao":"Primeira despesa", "valor":"200,00", "data": data_1
+        }, headers={'Authorization': 'Bearer '+self.token})
         value = jsonify({"success": "Registro deletado com sucesso para o id: {}".format("1")})
         response = self.app.delete(self.URL + "1", headers={'Authorization': 'Bearer '+self.token})
         self.assertEqual(value.get_json(), response.get_json())

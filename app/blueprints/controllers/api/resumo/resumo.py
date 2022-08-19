@@ -1,15 +1,17 @@
 from flask import jsonify
 from flask_restful import Resource
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.models.despesas_model import DespesasModel
 from app.models.receitas_model import ReceitasModel
+from app.models.users_model import UsersModel
 
 
 
 class Resumo(Resource):
     @jwt_required()
     def get(self, ano, mes):
+        user = UsersModel.get_user_by_email(email=get_jwt_identity()["email"])
         total_receitas = self.get_total_receitas(ano, mes)
         total_despesas = self.get_total_despesas(ano, mes)
         saldo_final = total_receitas - total_despesas

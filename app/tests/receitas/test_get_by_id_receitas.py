@@ -36,7 +36,9 @@ class TestGetByIDReceitas(TestCase):
     
     def test_should_be_return_data_by_id(self):
         data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        ReceitasModel.add(request={"descricao":"Primeira receita", "valor":"200,00", "data":data_1})
+        self.app.post('/api/v1/receitas', json={
+            "descricao":"Primeira receita", "valor":"200,00", "data":data_1
+        }, headers={'Authorization': 'Bearer '+self.token})
         id = "1"
         value = jsonify({"id": 1, "descricao": "Primeira receita", "valor": "200,00", "data": data_1})
         response = self.app.get(self.URL + id, headers={'Authorization': 'Bearer '+self.token})
