@@ -5,7 +5,6 @@ from flask import jsonify
 
 from app import app
 from app.ext.flask_sqlalchemy import db
-from app.models.receitas_model import ReceitasModel
 from ...models.users_model import UsersModel
 
 
@@ -35,9 +34,11 @@ class TestDeleteReceitas(TestCase):
         
         
     def test_should_be_delete_data_and_get_message_success(self):
-        data_1 = datetime.now()
-        ReceitasModel.add(request={"descricao":"Primeira receita", "valor":"200,00", "data":data_1})
-        value = jsonify({"success": "Registro deletado com sucesso para o id: {}".format("1")})
+        data_1 = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.app.post('/api/v1/receitas', json={
+            "descricao":"Primeira receita", "valor":"200,00", "data":data_1
+        }, headers={'Authorization': 'Bearer '+self.token})
+        value = jsonify({"success": "Registro deletado com sucesso para o id: 1"})
         response = self.app.delete(self.URL + "1", headers={'Authorization': 'Bearer '+self.token})
         self.assertEqual(value.get_json(), response.get_json())
     
