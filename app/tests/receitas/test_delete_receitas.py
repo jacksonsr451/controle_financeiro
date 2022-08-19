@@ -45,7 +45,7 @@ class TestDeleteReceitas(TestCase):
         
     def test_should_be_return_message_error(self):
         id = "1"
-        value = jsonify({"message": "Registro não existe para este id: {}".format(id)})
+        value = jsonify({"error": "Registro não existe para este id: {}".format(id)})
         response = self.app.delete(self.URL + id, headers={'Authorization': 'Bearer '+self.token})
         self.assertEqual(value.get_json(), response.get_json())
         

@@ -46,7 +46,7 @@ class TestPostReceitas(TestCase):
         
     def test_should_be_retorn_message_error_by_duplicate_data(self):
         data_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        value = jsonify({"message": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})
+        value = jsonify({"error": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})
         ReceitasModel.add(request={"descricao": "descricao 1", "valor": "100,00", "data": data_time})
         response = self.app.post(self.URL, json={
             "descricao": "descricao 1", "valor": "200,00", "data": data_time
