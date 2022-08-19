@@ -19,6 +19,37 @@ Projeto proposto pela Alura Challend Backend.
 Projeto bem bacana para se trabalhar, utilizando conseitos de login com jwt. Efetuei o vinculo de usuário a cada um dos modelos através do login, pegando o e-mail e assim tendo o id de usuário para cadastrar cada despesa ou receita.
 
 
+# Login
+
+``` http://localhost:5500/api/v1/auth/login ```
+
+```json
+{
+    "email": "email@email.com",
+    "password": "123456"
+}
+```
+
+caso de sucesso deve se retornar um novo token
+
+```json
+{
+    "token": "eyJ0eXAiOiJAL1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY2MDc4ODg3NSlkanRpIjoiNzgzNTAyMzYtYzRhYS00NDRmLWE1OGEtOGQwMDliNjFmNzgwIiwidHlaTSI6ImFjY2VzcyIsInN1YiI6eyJlbWFpbCI6ImphY2tzb25zcjQ1MUBnbWFpbC5ja20ifSwibmJmIjoxNjYwNzg4ODc1LCJleHAiOjE2NjA3OTYwNzV9.SgX6-LH4G5lEwGMltxUxi6Zjd80Vn84VPIO10lkq_Ro"
+}
+```
+
+caso de erro
+
+```json
+{
+    "error": "Erro ao tentar login!"
+}
+```
+
+a cada rota da api deve ser entregue o TOKEN meno para cadastro de usuário.
+
+``` Authorization: Bearer meu-token ```
+
 ```py 
     @classmethod
     def add_user_id(cls, user_id):
@@ -43,14 +74,22 @@ def meu_controller(self):
 
 **Por padrão as Rotas da api se iniciam como** /api/v1
 
-- ```/receitas```
-- ```/receitas/<id>```
-- ```/despesas```
-- ```/despesas/<id>```
+- ```/api/v1/receitas```
+- ```/api/v1/receitas?descricao=??```
+- ```/api/v1/receitas/<id>```
+- ```/api/v1/receitas/<ano>/<mes>```
+- ```/api/v1/despesas```
+- ```/api/v1/despesas?descricao=??```
+- ```/api/v1/despesas/<id>```
+- ```/api/v1/despesas/<ano>/<mes>```
+- ```/api/v1/resumo/<ano>/<mes>```
+- ```/api/v1/usuarios```
+- ```/api/v1/usuarios/<id>```
+- ```/api/v1/auth/login```
 
 ### exemplos:
 
-no caso de localhost e porta 5000:
+no caso de localhost é porta 5000:
 
 ### Adcionar uma receita
 
@@ -78,7 +117,7 @@ caso ERRO
 
 ```json
 {
-    "message": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"
+    "error": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"
 }
 ```
 
@@ -111,7 +150,7 @@ caso não tenha REGISTOS
 
 ```json
 {
-    "message": "Não há registros em receitas"
+    "error": "Não há registros em receitas"
 }
 ```
 
@@ -133,7 +172,7 @@ caso ERRO
 
 ```json
 {
-    "message": "Registro não existe para este id: 1"
+    "error": "Registro não existe para este id: 1"
 }
 ```
 
@@ -180,7 +219,7 @@ caso não encontre REGISTO
 
 ```json
 {
-	"message": "Não há registro para receita de id: 1"
+	"error": "Não há registro para receita de id: 1"
 }
 ```
 

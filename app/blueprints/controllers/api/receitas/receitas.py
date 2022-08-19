@@ -26,7 +26,7 @@ class Receitas(Resource):
             return jsonify(ReceitasSchema(data=receitas, many=True).data)
         elif len(receitas) == 1:
             return jsonify(ReceitasSchema(receitas[0]).data)
-        return jsonify({"message": "Não há registros em receitas"})
+        return jsonify({"error": "Não há registros em receitas"})
     
     
     @jwt_required()
@@ -34,4 +34,4 @@ class Receitas(Resource):
         user = UsersModel.get_user_by_email(email=get_jwt_identity()["email"])
         if ReceitasModel.add_user_id(user_id=user.id).add(request=ReceitasRequest.get()):
             return jsonify({"message": "Dados inseridos com sucesso"})
-        return jsonify({"message": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})
+        return jsonify({"error": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})
