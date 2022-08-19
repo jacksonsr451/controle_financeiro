@@ -1,3 +1,4 @@
+from app.enum.roles_enum import RolesEnum
 from app.ext.flask_sqlalchemy import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -10,6 +11,7 @@ class UsersModel(db.Model):
     username = db.Column(db.String(80), nullable=False, unique=True)
     email = db.Column(db.String(80), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
+    role = db.Column(db.Enum(RolesEnum), nullable=False, default=RolesEnum.USER)
     
     despesas = db.relationship("DespesasModel", backref="despesas")
     receitas = db.relationship("ReceitasModel", backref="receitas")
