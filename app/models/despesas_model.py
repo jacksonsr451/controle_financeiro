@@ -1,6 +1,8 @@
+from flask_jwt_extended import get_jwt_identity
 from datetime import datetime
 from app.enum.categoria_enum import CategoriaEnum
 from app.ext.flask_sqlalchemy import db
+from app.models.users_model import UsersModel
     
 
 
@@ -41,22 +43,36 @@ class DespesasModel(db.Model):
     
     @staticmethod
     def all() -> list:
-        return DespesasModel.query.all()
+        user = UsersModel.get_user_by_email(email=get_jwt_identity()["email"])
+        return DespesasModel.query\
+                .filter_by(
+                    user_id = user.id
+                ).all()
     
     
     @staticmethod
     def filter_by_descicao(descricao) -> list:
-        return DespesasModel.query.filter(
+        user = UsersModel.get_user_by_email(email=get_jwt_identity()["email"])
+        return DespesasModel.query\
+                .filter(
+                    DespesasModel.user_id == user.id
+                )\
+                .filter(
                     DespesasModel.descricao.like(
                         "%{}%".format(descricao))
-                    ).all()
+                ).all()
 
     
     @staticmethod
     def filter_by_ano_and_mes(ano, mes) -> list:
-        return DespesasModel.query.filter(
-                    DespesasModel.data.like(
-                        "%{}-{}%".format(ano, mes))
+        user = UsersModel.get_user_by_email(email=get_jwt_identity()["email"])
+        return DespesasModel.query\
+                    .filter(
+                        DespesasModel.user_id == user.id
+                    )\
+                    .filter(
+                            DespesasModel.data.like(
+                                "%{}-{}%".format(ano, mes))
                     ).all()
         
         
@@ -81,8 +97,14 @@ class DespesasModel(db.Model):
     
     @staticmethod
     def get(id) -> dict:
-        receita = DespesasModel.query.get(id)
-        return receita
+        user = UsersModel.get_user_by_email(email=get_jwt_identity()["email"])
+        return DespesasModel.query\
+                    .filter(
+                        DespesasModel.user_id == user.id
+                    )\
+                    .filter_by(
+                        id=id
+                    ).first()
     
     
     @staticmethod
@@ -101,7 +123,14 @@ class DespesasModel(db.Model):
     
     @staticmethod
     def delete(id) -> bool:
-        receita = DespesasModel.get(id)
+        user = UsersModel.get_user_by_email(email=get_jwt_identity()["email"])
+        receita = DespesasModel.query\
+                    .filter(
+                        DespesasModel.user_id == user.id
+                    )\
+                    .filter_by(
+                        id=id
+                    ).first()
         if receita is not None:
             db.session.delete(receita)
             db.session.commit()

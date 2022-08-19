@@ -11,8 +11,8 @@ class UsersModel(db.Model):
     email = db.Column(db.String(80), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
     
-    despesas = db.relationship("DespesasModel")
-    receitas = db.relationship("ReceitasModel")
+    despesas = db.relationship("DespesasModel", backref="despesas")
+    receitas = db.relationship("ReceitasModel", backref="receitas")
     
     
     def __init__(self, username=None, email=None, password=None) -> None:
