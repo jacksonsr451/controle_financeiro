@@ -2,6 +2,43 @@
 
 Projeto proposto pela Alura Challend Backend.
 
+# Utilizando
+
+- Dokerfile: docker
+- docker-compose
+- Flask
+- Flask-RESTful
+- Flask-SQLAlchemy
+- Flask-Migrate
+- flask-marshmallow
+- marshmallow-sqlalchemy
+- marshmallow-enum
+- Flask-JWT-Extended
+- gunicorn
+
+Projeto bem bacana para se trabalhar, utilizando conseitos de login com jwt. Efetuei o vinculo de usuário a cada um dos modelos através do login, pegando o e-mail e assim tendo o id de usuário para cadastrar cada despesa ou receita.
+
+
+```py 
+    @classmethod
+    def add_user_id(cls, user_id):
+        cls.user_id = user_id
+        return cls
+```
+
+Assim ao controlador chamar o model é passado a ele o usuário que esta utilizando para efetuar o cadastro de uma receita ou despesa.
+
+```py
+from flask_jwt_extended import get_jwt_identity
+
+def meu_controller(self):
+    user = UserModel.get_user_by_email(email=get_jwt_identity()["email"])
+
+    DespesasModel.add_user_id(user_id=user.id).add(request=req_request)
+
+    ReceitasModel.add_user_id(user_id=user.id).add(request=req_request)
+```
+
 # Rotas
 
 **Por padrão as Rotas da api se iniciam como** /api/v1
