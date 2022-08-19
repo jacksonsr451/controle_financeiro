@@ -6,10 +6,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 class UsersModel(db.Model):
     __tablename__ = "users"
     
-    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(80), nullable=False, unique=True)
     email = db.Column(db.String(80), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
+    
+    despesas = db.relationship("DespesasModel")
+    receitas = db.relationship("ReceitasModel")
     
     
     def __init__(self, username=None, email=None, password=None) -> None:
@@ -24,6 +27,11 @@ class UsersModel(db.Model):
         if not check_password_hash(user.password, request["password"]):
             return False
         return True
+    
+    
+    @staticmethod
+    def get_user_by_email(email):
+        return UsersModel.query.filter_by(email=email).first()
     
     
     @staticmethod
