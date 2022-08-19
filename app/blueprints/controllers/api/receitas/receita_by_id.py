@@ -1,6 +1,8 @@
 from flask import jsonify
 from flask_restful import Resource
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
+
+from app.models.users_model import UsersModel
 
 from ....requets.receitas_request import ReceitasRequest
 from ....serializer.receitas_schema import ReceitasSchema
@@ -25,11 +27,12 @@ class ReceitaByID(Resource):
         
     
     @jwt_required()
-    def put(self, id) -> jsonify:    
+    def put(self, id) -> jsonify:
+        user = UsersModel.get_user_by_email(email=get_jwt_identity()["email"])    
         put_request = ReceitasRequest.get()
         if ReceitasModel.get(id) is None:
             return jsonify({"message": "Não há registro para receitas de id: {}".format(id)})  
-        if ReceitasModel.put(id, put_request):    
+        if ReceitasModel.add_user_id(user_id=user.id).put(id, put_request):    
             return jsonify({"message": "Dados atualizado"})  
         return jsonify({"message": "Não é permitido atualizar, verifique os dados inseridos e se não são repeditos!".format(id)})
         

@@ -1,6 +1,8 @@
 from flask import jsonify, request
 from flask_restful import Resource
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
+
+from app.models.users_model import UsersModel
 
 from ....requets.receitas_request import ReceitasRequest
 from ....serializer.receitas_schema import ReceitasSchema
@@ -29,6 +31,7 @@ class Receitas(Resource):
     
     @jwt_required()
     def post(self) -> jsonify:
-        if ReceitasModel.add(request=ReceitasRequest.get()):
+        user = UsersModel.get_user_by_email(email=get_jwt_identity()["email"])
+        if ReceitasModel.add_user_id(user_id=user.id).add(request=ReceitasRequest.get()):
             return jsonify({"message": "Dados inseridos com sucesso"})
         return jsonify({"message": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})

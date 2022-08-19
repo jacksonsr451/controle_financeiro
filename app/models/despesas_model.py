@@ -11,12 +11,13 @@ class DespesasModel(db.Model):
     )
     
     id =  db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     categoria = db.Column(db.Enum(CategoriaEnum), nullable=False, default=CategoriaEnum.OUTRAS)
     descricao = db.Column(db.Text, nullable=False)
     valor = db.Column(db.String(50), nullable=False)
     data = db.Column(db.DateTime, nullable=False)
     
-    
+        
     def __init__(self, categoria=None, descricao=None, valor=None, data=None) -> None:
         if categoria is not None:
             self.categoria = CategoriaEnum(categoria)
@@ -24,6 +25,12 @@ class DespesasModel(db.Model):
         self.valor = valor
         self.data = self.convert_params_by_datetime(data)
             
+    
+    @classmethod
+    def add_user_id(cls, user_id):
+        cls.user_id = user_id
+        return cls
+        
     
     @staticmethod
     def convert_params_by_datetime(value):
