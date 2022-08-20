@@ -7,6 +7,7 @@ Projeto proposto pela Alura Challend Backend.
 - Dokerfile: docker
 - docker-compose
 - Flask
+- dynaconf
 - Flask-RESTful
 - Flask-SQLAlchemy
 - Flask-Migrate
