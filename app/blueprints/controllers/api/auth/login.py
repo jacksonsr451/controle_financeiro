@@ -1,10 +1,10 @@
 from datetime import timedelta
-from flask_jwt_extended import create_access_token
+
 from flask import jsonify
+from flask_jwt_extended import create_access_token
 from flask_restful import Resource
 
 from .....models.users_model import UsersModel
-
 from ....requets.auth_request import AuthRequest
 
 

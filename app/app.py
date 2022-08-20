@@ -1,4 +1,5 @@
 from flask import Flask
+
 from app.ext import configuration
 
 

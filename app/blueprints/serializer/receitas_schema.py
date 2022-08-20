@@ -1,5 +1,5 @@
-from app.models.receitas_model import ReceitasModel
 from app.ext.flask_marshmallow import ma
+from app.models.receitas_model import ReceitasModel
 
 
 class ReceitasSchema(ma.SQLAlchemyAutoSchema):

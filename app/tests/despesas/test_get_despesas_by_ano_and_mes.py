@@ -1,11 +1,12 @@
 from datetime import datetime
 from unittest import TestCase
-from flask import jsonify
 
+from flask import jsonify
 
 from app import app
 from app.ext.flask_sqlalchemy import db
 from app.models.despesas_model import DespesasModel
+
 from ...models.users_model import UsersModel
 
 

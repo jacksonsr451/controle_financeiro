@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from app import app
 from app.ext.flask_sqlalchemy import db
+
 from ...models.users_model import UsersModel
 
 

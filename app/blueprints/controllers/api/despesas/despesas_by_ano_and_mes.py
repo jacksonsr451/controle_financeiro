@@ -1,9 +1,9 @@
 from flask import jsonify
-from flask_restful import Resource
 from flask_jwt_extended import jwt_required
+from flask_restful import Resource
 
-from app.models.despesas_model import DespesasModel
 from app.blueprints.serializer.despesas_schema import DespesasSchema
+from app.models.despesas_model import DespesasModel
 
 
 class DespesasByAnoEMes(Resource):

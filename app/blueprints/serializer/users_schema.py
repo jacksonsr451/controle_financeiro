@@ -1,6 +1,7 @@
 from marshmallow_enum import EnumField
-from app.models.users_model import UsersModel
+
 from app.ext.flask_marshmallow import ma
+from app.models.users_model import UsersModel
 
 
 class UsersSchema(ma.SQLAlchemyAutoSchema):

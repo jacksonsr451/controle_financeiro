@@ -1,7 +1,8 @@
 from marshmallow_enum import EnumField
+
 from app.enum.categoria_enum import CategoriaEnum
-from app.models.despesas_model import DespesasModel
 from app.ext.flask_marshmallow import ma
+from app.models.despesas_model import DespesasModel
 
 
 class DespesasSchema(ma.SQLAlchemyAutoSchema):
