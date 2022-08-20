@@ -1,6 +1,6 @@
 default:
     TITLE: Controle Financeiro
-    SQLALCHEMY_DATABASE_URI: sqlite:///db.sqlite
+    # SQLALCHEMY_DATABASE_URI: sqlite:///db.sqlite
     SQLALCHEMY_TRACK_MODIFICATIONS: false
 
 
