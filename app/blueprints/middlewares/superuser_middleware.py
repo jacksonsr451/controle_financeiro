@@ -10,9 +10,7 @@ def superuser_middleware(func):
     @wraps(func)
     def decorated_function(*args, **kwargs):
         user = UsersModel.get_user_by_email(email=get_jwt_identity()["email"])
-        if user.role == "Superuser":
-            return func(*args, **kwargs)
-        
-        return jsonify({"message": "Precisa ser superuser para está rota!"})
-    
+        if user.role != "Superuser":
+            return jsonify({"message": "Precisa ser superuser para está rota!"})
+        return func(*args, **kwargs)
     return decorated_function
