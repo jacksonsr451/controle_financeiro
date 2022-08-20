@@ -1,4 +1,3 @@
-
 from flask_migrate import Migrate
 
 from app.ext.flask_sqlalchemy import db
