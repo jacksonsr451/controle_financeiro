@@ -1,10 +1,10 @@
 from flask import jsonify
-from flask_restful import Resource
 from flask_jwt_extended import jwt_required
-
-from ....serializer.receitas_schema import ReceitasSchema
+from flask_restful import Resource
 
 from app.models import ReceitasModel
+
+from ....serializer.receitas_schema import ReceitasSchema
 
 
 class ReceitasByAnoEMes(Resource):

@@ -1,13 +1,12 @@
 from flask import jsonify, request
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restful import Resource
-from flask_jwt_extended import jwt_required, get_jwt_identity
 
+from app.models import ReceitasModel
 from app.models.users_model import UsersModel
 
 from ....requets.receitas_request import ReceitasRequest
 from ....serializer.receitas_schema import ReceitasSchema
-
-from app.models import ReceitasModel
 
 
 class Receitas(Resource):

@@ -2,15 +2,10 @@ from flask import Blueprint
 from flask_restful import Api
 
 from .auth import Login
-
-from .users import UsersById
 from .despesas import Despesas, DespesasByAnoEMes, DespesasByID
-
-from .receitas import Receitas, ReceitaByID, ReceitasByAnoEMes
+from .receitas import ReceitaByID, Receitas, ReceitasByAnoEMes
 from .resumo import Resumo
-
-from .users import Users
-
+from .users import Users, UsersById
 
 blueprint = Blueprint('api', __name__, url_prefix='/api/v1')
 api = Api(blueprint)

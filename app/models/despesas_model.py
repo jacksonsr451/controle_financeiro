@@ -1,5 +1,7 @@
-from flask_jwt_extended import get_jwt_identity
 from datetime import datetime
+
+from flask_jwt_extended import get_jwt_identity
+
 from app.enum.categoria_enum import CategoriaEnum
 from app.ext.flask_sqlalchemy import db
 from app.models.users_model import UsersModel

@@ -6,6 +6,7 @@ from flask import jsonify
 from app import app
 from app.ext.flask_sqlalchemy import db
 from app.models.receitas_model import ReceitasModel
+
 from ...models.users_model import UsersModel
 
 

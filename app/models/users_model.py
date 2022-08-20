@@ -1,6 +1,7 @@
+from werkzeug.security import check_password_hash, generate_password_hash
+
 from app.enum.roles_enum import RolesEnum
 from app.ext.flask_sqlalchemy import db
-from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class UsersModel(db.Model):
