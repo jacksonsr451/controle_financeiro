@@ -1,17 +1,21 @@
-# Welcome to MkDocs
+# Controle Financeiro
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+Projeto proposto pela Alura Challend Backend.
 
-## Commands
+# Utilizando
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+- Dokerfile: docker
+- docker-compose
+- Flask
+- dynaconf
+- Flask-RESTful
+- Flask-SQLAlchemy
+- Flask-Migrate
+- flask-marshmallow
+- marshmallow-sqlalchemy
+- marshmallow-enum
+- Flask-JWT-Extended
+- gunicorn
+- CLI
 
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+Projeto bem bacana para se trabalhar, utilizando conseitos de login com jwt. Efetuei o vinculo de usuário a cada um dos modelos através do login, pegando o e-mail e assim tendo o id de usuário para cadastrar cada despesa ou receita.
