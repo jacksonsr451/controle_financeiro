@@ -3,7 +3,8 @@ FROM python:3.9.5-slim-buster
 
 RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
 
-ENV CONTAINER_HOME=/usr/www
+ENV CONTAINER_HOME=/usr/www\
+    FLASK_APP=app/app.py
 
 COPY ./ /usr/www
 

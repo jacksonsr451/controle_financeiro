@@ -10,28 +10,32 @@ from ....serializer.receitas_schema import ReceitasSchema
 from app.models import ReceitasModel
 
 
-
 class Receitas(Resource):
     @jwt_required()
     def get(self) -> jsonify:
-        if "descricao" in request.args:
+        if 'descricao' in request.args:
             return self.get_response_on_receitas(
-                ReceitasModel.filter_by_descicao(request.args["descricao"]))
+                ReceitasModel.filter_by_descicao(request.args['descricao'])
+            )
         return self.get_response_on_receitas(ReceitasModel.all())
-    
-    
+
     @jwt_required()
     def get_response_on_receitas(self, receitas) -> jsonify:
         if len(receitas) > 1:
             return jsonify(ReceitasSchema(data=receitas, many=True).data)
         elif len(receitas) == 1:
             return jsonify(ReceitasSchema(receitas[0]).data)
-        return jsonify({"error": "Não há registros em receitas"})
-    
-    
+        return jsonify({'error': 'Não há registros em receitas'})
+
     @jwt_required()
     def post(self) -> jsonify:
-        user = UsersModel.get_user_by_email(email=get_jwt_identity()["email"])
-        if ReceitasModel.add_user_id(user_id=user.id).add(request=ReceitasRequest.get()):
-            return jsonify({"message": "Dados inseridos com sucesso"})
-        return jsonify({"error": "Não é permitido salvar, verifique os dados inseridos e se não são repeditos!"})
+        user = UsersModel.get_user_by_email(email=get_jwt_identity()['email'])
+        if ReceitasModel.add_user_id(user_id=user.id).add(
+            request=ReceitasRequest.get()
+        ):
+            return jsonify({'message': 'Dados inseridos com sucesso'})
+        return jsonify(
+            {
+                'error': 'Não é permitido salvar, verifique os dados inseridos e se não são repeditos!'
+            }
+        )
