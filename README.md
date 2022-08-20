@@ -15,9 +15,25 @@ Projeto proposto pela Alura Challend Backend.
 - marshmallow-enum
 - Flask-JWT-Extended
 - gunicorn
+- CLI
 
 Projeto bem bacana para se trabalhar, utilizando conseitos de login com jwt. Efetuei o vinculo de usuário a cada um dos modelos através do login, pegando o e-mail e assim tendo o id de usuário para cadastrar cada despesa ou receita.
 
+# Superuser 
+
+Para adcionar um superuser, somente rodar o comando no terminal
+
+```shell
+flask create-superuser
+```
+
+```shell
+flask create-superuser
+Create superuser command
+Username: nome-de-usuario
+E-Mail: email@email.com
+Password: minhaSenha
+```
 
 # Login
 
