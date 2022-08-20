@@ -6,7 +6,7 @@ authors = ["jacksonsr451 <jackson.severino.rocha@escola.pr.gov.br>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "3.9.2"
+python = "3.8.13"
 Flask = "^2.1.3"
 unittest = "^0.0"
 dynaconf = "^3.1.9"
