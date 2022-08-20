@@ -641,7 +641,7 @@ python-versions = ">=3.7"
 name = "unittest"
 version = "0.0"
 description = ""
-category = "main"
+category = "dev"
 optional = false
 python-versions = "*"
 
@@ -698,7 +698,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "3.10.6"
-content-hash = "7197a68f8e2751183a7b637618fd69a6b3f1bd458fec4dd57d59d06d010dca45"
+content-hash = "87348ad697bed5deb350db03beb3d5870bcd0111616953319fd623e354b65947"
 
 [metadata.files]
 alembic = []
